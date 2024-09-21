@@ -1,7 +1,13 @@
-import { useState } from 'react'
-import { ChevronRight, ChevronLeft, Star, Rocket } from 'lucide-react'
+import { useState } from 'react';
+import { ChevronRight, ChevronLeft, Star, Rocket } from 'lucide-react';
 
-const quizQuestions = [
+interface QuizQuestion {
+  question: string;
+  options: string[];
+  correctAnswer: number;
+}
+
+const quizQuestions: QuizQuestion[] = [
   {
     question: "What is the main greenhouse gas responsible for climate change?",
     options: ["Oxygen", "Carbon Dioxide", "Nitrogen", "Helium"],
@@ -42,9 +48,9 @@ const quizQuestions = [
     ],
     correctAnswer: 2
   }
-]
+];
 
-const StarryBackground = () => (
+const StarryBackground: React.FC = () => (
   <div className="fixed inset-0 overflow-hidden z-0">
     <div className="absolute inset-0 bg-indigo-900">
       {[...Array(50)].map((_, i) => (
@@ -62,39 +68,39 @@ const StarryBackground = () => (
       ))}
     </div>
   </div>
-)
+);
 
-export default function QuizPage() {
-  const [currentQuestion, setCurrentQuestion] = useState(0)
-  const [selectedAnswer, setSelectedAnswer] = useState(null)
-  const [score, setScore] = useState(0)
-  const [quizCompleted, setQuizCompleted] = useState(false)
-  const [coins, setCoins] = useState(0)
+const QuizPage: React.FC = () => {
+  const [currentQuestion, setCurrentQuestion] = useState<number>(0);
+  const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
+  const [score, setScore] = useState<number>(0);
+  const [quizCompleted, setQuizCompleted] = useState<boolean>(false);
+  const [coins, setCoins] = useState<number>(0);
 
-  const handleAnswerSelect = (answerIndex) => {
-    setSelectedAnswer(answerIndex)
-  }
+  const handleAnswerSelect = (answerIndex: number) => {
+    setSelectedAnswer(answerIndex);
+  };
 
   const handleNextQuestion = () => {
     if (selectedAnswer === quizQuestions[currentQuestion].correctAnswer) {
-      setScore(score + 1)
-      setCoins(coins + 10)
+      setScore(score + 1);
+      setCoins(coins + 10);
     }
 
-    setSelectedAnswer(null)
+    setSelectedAnswer(null);
     if (currentQuestion + 1 < quizQuestions.length) {
-      setCurrentQuestion(currentQuestion + 1)
+      setCurrentQuestion(currentQuestion + 1);
     } else {
-      setQuizCompleted(true)
+      setQuizCompleted(true);
     }
-  }
+  };
 
   const resetQuiz = () => {
-    setCurrentQuestion(0)
-    setSelectedAnswer(null)
-    setScore(0)
-    setQuizCompleted(false)
-  }
+    setCurrentQuestion(0);
+    setSelectedAnswer(null);
+    setScore(0);
+    setQuizCompleted(false);
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-indigo-400 to-purple-600 p-8 relative overflow-hidden">
@@ -175,5 +181,7 @@ export default function QuizPage() {
         </main>
       </div>
     </div>
-  )
-}
+  );
+};
+
+export default QuizPage;
