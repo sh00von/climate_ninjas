@@ -1,77 +1,14 @@
 import { useState } from 'react';
 import { Rocket, Star, Book, Award, HelpCircle, Lock, Unlock } from 'lucide-react';
-
-// Types for Resource
-interface Resource {
-  id: number;
-  name: string;
-  cost: number;
-}
-
-// Add keyframes for animated stars with drift and parallax effects
-const starAnimationStyles = `
-  @keyframes twinkle {
-    0%, 100% { opacity: 0.5; }
-    50% { opacity: 1; }
-  }
-
-  @keyframes drift {
-    0% {
-      transform: translate(0, 0);
-    }
-    50% {
-      transform: translate(10px, -10px);
-    }
-    100% {
-      transform: translate(0, 0);
-    }
-  }
-
-  @keyframes driftLarge {
-    0% {
-      transform: translate(0, 0);
-    }
-    50% {
-      transform: translate(20px, -20px);
-    }
-    100% {
-      transform: translate(0, 0);
-    }
-  }
-
-  @keyframes driftSmall {
-    0% {
-      transform: translate(0, 0);
-    }
-    50% {
-      transform: translate(5px, -5px);
-    }
-    100% {
-      transform: translate(0, 0);
-    }
-  }
-
-  @keyframes float {
-    0% {
-      transform: translateY(0);
-    }
-    50% {
-      transform: translateY(-5px);
-    }
-    100% {
-      transform: translateY(0);
-    }
-  }
-`;
-
-const StarryBackground: React.FC = () => (
+import HelpModal from '../components/HelpModal';
+const StarryBackground = () => (
   <>
-    <style>{starAnimationStyles}</style>
     <div className="fixed inset-0 overflow-hidden z-0">
       <div className="absolute inset-0 bg-indigo-900">
-        {[...Array(100)].map((_, i) => {
+        {/* Stars */}
+        {[...Array(300)].map((_, i) => {
           const size = Math.random() * 3 + 1;
-          const animationDuration = Math.random() * 10 + 10;
+          const animationDuration = Math.random() * 8 + 4;
           const driftAnimation = Math.random() < 0.5 ? 'driftLarge' : 'driftSmall';
 
           return (
@@ -83,7 +20,24 @@ const StarryBackground: React.FC = () => (
                 left: `${Math.random() * 100}%`,
                 width: `${size}px`,
                 height: `${size}px`,
-                animation: `twinkle ${Math.random() * 5 + 5}s linear infinite, ${driftAnimation} ${animationDuration}s ease-in-out infinite`,
+                animation: `twinkle ${Math.random() * 3 + 2}s linear infinite, ${driftAnimation} ${animationDuration}s ease-in-out infinite`,
+              }}
+            />
+          );
+        })}
+        {/* Larger stars */}
+        {[...Array(15)].map((_, i) => {
+          const size = Math.random() * 5 + 5;
+          return (
+            <div
+              key={i}
+              className="absolute rounded-full bg-yellow-300"
+              style={{
+                top: `${Math.random() * 100}%`,
+                left: `${Math.random() * 100}%`,
+                width: `${size}px`,
+                height: `${size}px`,
+                animation: `twinkle ${Math.random() * 3 + 1}s linear infinite`,
               }}
             />
           );
@@ -93,35 +47,45 @@ const StarryBackground: React.FC = () => (
   </>
 );
 
-const Planet: React.FC<{ color: string; size: string; orbitDuration: number }> = ({ color, size, orbitDuration }) => (
-  <div
-    className={`absolute rounded-full ${color}`}
-    style={{
-      width: size,
-      height: size,
-      animation: `orbit ${orbitDuration}s linear infinite`,
-    }}
-  />
+const Planet = ({ color, size, orbitDuration }) => (
+  <div className="absolute" style={{ animation: `orbit ${orbitDuration}s linear infinite` }}>
+    <div
+      className={`rounded-full ${color}`}
+      style={{
+        width: size,
+        height: size,
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)', // Center the planet
+      }}
+    />
+  </div>
 );
 
-const Component: React.FC = () => {
-  const [coins, setCoins] = useState<number>(100);
-  const [level, setLevel] = useState<number>(1);
-  const [unlockedResources, setUnlockedResources] = useState<number[]>([]);
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [resourceToUnlock, setResourceToUnlock] = useState<Resource | null>(null);
 
-  const resources: Resource[] = [
+const Home = () => {
+  const [coins, setCoins] = useState(100);
+  const [level, setLevel] = useState(1);
+  const [unlockedResources, setUnlockedResources] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [resourceToUnlock, setResourceToUnlock] = useState(null);
+  const [isHelpModalOpen, setIsHelpModalOpen] = useState(false); // New state for help modal
+
+  const resources = [
     { id: 1, name: "Space Explorer's Handbook", cost: 50 },
     { id: 2, name: "Virtual Greenhouse Tour", cost: 75 },
     { id: 3, name: "Eco-Hero Sticker Pack", cost: 30 },
   ];
 
-  const unlockResource = (resource: Resource) => {
+  const unlockResource = (resource) => {
     if (coins >= resource.cost && !unlockedResources.includes(resource.id)) {
       setResourceToUnlock(resource);
       setIsModalOpen(true);
     }
+  };
+  const toggleHelpModal = () => {
+    setIsHelpModalOpen(!isHelpModalOpen);
   };
 
   const confirmUnlock = () => {
@@ -279,10 +243,15 @@ const Component: React.FC = () => {
             </div>
           </div>
         )}
+      {/* Help Modal */}
+      <HelpModal isOpen={isHelpModalOpen} onClose={toggleHelpModal} />
+
 
         <footer className="mt-8 text-center">
-          <button className="bg-yellow-400 text-indigo-800 px-6 py-3 rounded-full font-bold text-lg hover:bg-yellow-300 transition-colors flex items-center mx-auto transform hover:scale-110 transition-transform">
-            <HelpCircle className="w-6 h-6 mr-2" />
+        <button
+          onClick={toggleHelpModal} // Updated to handle click
+          className="bg-yellow-400 text-indigo-800 px-6 py-3 rounded-full font-bold text-lg hover:bg-yellow-300 transition-colors flex items-center mx-auto transform hover:scale-110 transition-transform"
+        >      <HelpCircle className="w-6 h-6 mr-2" />
             Need Help?
           </button>
         </footer>
@@ -291,4 +260,4 @@ const Component: React.FC = () => {
   );
 };
 
-export default Component;
+export default Home;
