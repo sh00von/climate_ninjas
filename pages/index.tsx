@@ -1,11 +1,11 @@
-import { useState } from 'react'
-import { Rocket, Star, Book, Award, HelpCircle, Lock, Unlock } from 'lucide-react'
+import { useState } from 'react';
+import { Rocket, Star, Book, Award, HelpCircle, Lock, Unlock } from 'lucide-react';
 
 // Types for Resource
 interface Resource {
-  id: number
-  name: string
-  cost: number
+  id: number;
+  name: string;
+  cost: number;
 }
 
 // Add keyframes for animated stars with drift and parallax effects
@@ -50,20 +50,29 @@ const starAnimationStyles = `
       transform: translate(0, 0);
     }
   }
-`
+
+  @keyframes float {
+    0% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-5px);
+    }
+    100% {
+      transform: translateY(0);
+    }
+  }
+`;
 
 const StarryBackground: React.FC = () => (
   <>
-    {/* Injecting the styles directly into the component */}
     <style>{starAnimationStyles}</style>
     <div className="fixed inset-0 overflow-hidden z-0">
       <div className="absolute inset-0 bg-indigo-900">
-        {/* Add 100 stars for more density */}
         {[...Array(100)].map((_, i) => {
-          // Randomize animation speed, direction, and size
-          const size = Math.random() * 3 + 1 // Star size between 1px and 4px
-          const animationDuration = Math.random() * 10 + 10 // Duration between 10s and 20s
-          const driftAnimation = Math.random() < 0.5 ? 'driftLarge' : 'driftSmall'
+          const size = Math.random() * 3 + 1;
+          const animationDuration = Math.random() * 10 + 10;
+          const driftAnimation = Math.random() < 0.5 ? 'driftLarge' : 'driftSmall';
 
           return (
             <div
@@ -77,12 +86,12 @@ const StarryBackground: React.FC = () => (
                 animation: `twinkle ${Math.random() * 5 + 5}s linear infinite, ${driftAnimation} ${animationDuration}s ease-in-out infinite`,
               }}
             />
-          )
+          );
         })}
       </div>
     </div>
   </>
-)
+);
 
 const Planet: React.FC<{ color: string; size: string; orbitDuration: number }> = ({ color, size, orbitDuration }) => (
   <div
@@ -93,25 +102,40 @@ const Planet: React.FC<{ color: string; size: string; orbitDuration: number }> =
       animation: `orbit ${orbitDuration}s linear infinite`,
     }}
   />
-)
+);
 
 const Component: React.FC = () => {
-  const [coins, setCoins] = useState<number>(100)
-  const [level, setLevel] = useState<number>(1)
-  const [unlockedResources, setUnlockedResources] = useState<number[]>([])
+  const [coins, setCoins] = useState<number>(100);
+  const [level, setLevel] = useState<number>(1);
+  const [unlockedResources, setUnlockedResources] = useState<number[]>([]);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [resourceToUnlock, setResourceToUnlock] = useState<Resource | null>(null);
 
   const resources: Resource[] = [
     { id: 1, name: "Space Explorer's Handbook", cost: 50 },
     { id: 2, name: "Virtual Greenhouse Tour", cost: 75 },
     { id: 3, name: "Eco-Hero Sticker Pack", cost: 30 },
-  ]
+  ];
 
   const unlockResource = (resource: Resource) => {
     if (coins >= resource.cost && !unlockedResources.includes(resource.id)) {
-      setCoins(coins - resource.cost)
-      setUnlockedResources([...unlockedResources, resource.id])
+      setResourceToUnlock(resource);
+      setIsModalOpen(true);
     }
-  }
+  };
+
+  const confirmUnlock = () => {
+    if (resourceToUnlock) {
+      setCoins(coins - resourceToUnlock.cost);
+      setUnlockedResources([...unlockedResources, resourceToUnlock.id]);
+      setResourceToUnlock(null);
+      setIsModalOpen(false);
+    }
+  };
+
+  const cancelUnlock = () => {
+    setIsModalOpen(false);
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-indigo-400 to-purple-600 p-8 relative overflow-hidden">
@@ -124,32 +148,25 @@ const Component: React.FC = () => {
         </div>
       </div>
       <div className="max-w-4xl mx-auto relative z-10">
-      <header className="mb-8">
-  {/* Site name centered for all screen sizes */}
-  <div className="flex flex-col items-center">
-    <h1 className="text-4xl md:text-5xl font-bold text-yellow-300 drop-shadow-lg mb-4 text-center" 
-      style={{ fontFamily: 'Comic Sans MS, cursive' }}>
-      GreenSpace Explorer
-    </h1>
-  </div>
+        <header className="mb-8">
+          <div className="flex flex-col items-center">
+            <h1 className="text-4xl md:text-5xl font-bold text-yellow-300 drop-shadow-lg mb-4 text-center" style={{ fontFamily: 'Comic Sans MS, cursive' }}>
+              GreenSpace Explorer
+            </h1>
+          </div>
 
-  {/* Coins and Level buttons */}
-  <div className="flex flex-col md:flex-row items-center justify-center md:justify-between space-y-4 md:space-y-0 md:space-x-4">
-    {/* Coins button */}
-    <div className="bg-yellow-300 text-indigo-800 px-4 py-2 rounded-full font-bold flex items-center transform rotate-3 hover:rotate-0 transition-transform">
-      <Star className="w-5 h-5 mr-2" />
-      {coins} Coins
-    </div>
+          <div className="flex flex-col md:flex-row items-center justify-center md:justify-between space-y-4 md:space-y-0 md:space-x-4">
+            <div className="bg-yellow-300 text-indigo-800 px-4 py-2 rounded-full font-bold flex items-center transform rotate-3 hover:rotate-0 transition-transform">
+              <Star className="w-5 h-5 mr-2" />
+              {coins} Coins
+            </div>
 
-    {/* Level button */}
-    <div className="bg-green-300 text-indigo-800 px-4 py-2 rounded-full font-bold flex items-center transform -rotate-3 hover:rotate-0 transition-transform">
-      <Rocket className="w-5 h-5 mr-2" />
-      Level {level}
-    </div>
-  </div>
-</header>
-
-
+            <div className="bg-green-300 text-indigo-800 px-4 py-2 rounded-full font-bold flex items-center transform -rotate-3 hover:rotate-0 transition-transform">
+              <Rocket className="w-5 h-5 mr-2" />
+              Level {level}
+            </div>
+          </div>
+        </header>
 
         <main className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <section className="bg-white rounded-lg p-6 shadow-lg transform hover:scale-105 transition-transform">
@@ -219,6 +236,50 @@ const Component: React.FC = () => {
           </section>
         </main>
 
+        {/* Confirmation Modal */}
+        {isModalOpen && (
+          <div className="fixed inset-0 flex items-center justify-center z-50">
+            <div className="absolute inset-0 bg-black bg-opacity-50 backdrop-blur-sm"></div>
+            <div className="bg-gradient-to-br from-indigo-400 to-purple-600 rounded-3xl p-8 shadow-2xl max-w-sm w-full m-4 relative z-10 border-4 border-yellow-300">
+              <div className="absolute top-0 left-0 w-full h-full overflow-hidden rounded-3xl">
+                {[...Array(20)].map((_, i) => (
+                  <div
+                    key={i}
+                    className="absolute rounded-full bg-white opacity-20"
+                    style={{
+                      top: `${Math.random() * 100}%`,
+                      left: `${Math.random() * 100}%`,
+                      width: `${Math.random() * 10 + 5}px`,
+                      height: `${Math.random() * 10 + 5}px`,
+                      animation: `float ${Math.random() * 10 + 5}s linear infinite`,
+                    }}
+                  />
+                ))}
+              </div>
+              <h2 className="text-3xl font-bold mb-4 text-yellow-300 text-center" style={{ fontFamily: 'Comic Sans MS, cursive' }}>
+                Unlock Treasure?
+              </h2>
+              <p className="text-white text-center mb-6">
+                Do you want to unlock <strong className="text-yellow-300">{resourceToUnlock?.name}</strong> for <span className="text-yellow-300">{resourceToUnlock?.cost} coins</span>?
+              </p>
+              <div className="flex justify-center space-x-4">
+                <button
+                  onClick={confirmUnlock}
+                  className="bg-green-400 hover:bg-green-500 text-white px-6 py-3 rounded-full font-bold text-lg transform hover:scale-110 transition-transform focus:outline-none focus:ring-2 focus:ring-green-300"
+                >
+                  Yes, please!
+                </button>
+                <button
+                  onClick={cancelUnlock}
+                  className="bg-red-400 hover:bg-red-500 text-white px-6 py-3 rounded-full font-bold text-lg transform hover:scale-110 transition-transform focus:outline-none focus:ring-2 focus:ring-red-300"
+                >
+                  No, thanks
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
         <footer className="mt-8 text-center">
           <button className="bg-yellow-400 text-indigo-800 px-6 py-3 rounded-full font-bold text-lg hover:bg-yellow-300 transition-colors flex items-center mx-auto transform hover:scale-110 transition-transform">
             <HelpCircle className="w-6 h-6 mr-2" />
@@ -227,7 +288,7 @@ const Component: React.FC = () => {
         </footer>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Component
+export default Component;
