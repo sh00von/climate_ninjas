@@ -124,21 +124,32 @@ const Component: React.FC = () => {
         </div>
       </div>
       <div className="max-w-4xl mx-auto relative z-10">
-        <header className="flex justify-between items-center mb-8">
-          <h1 className="text-5xl font-bold text-yellow-300 drop-shadow-lg" style={{ fontFamily: 'Comic Sans MS, cursive' }}>
-            GreenSpace Explorer
-          </h1>
-          <div className="flex items-center space-x-4">
-            <div className="bg-yellow-300 text-indigo-800 px-4 py-2 rounded-full font-bold flex items-center transform rotate-3 hover:rotate-0 transition-transform">
-              <Star className="w-5 h-5 mr-2" />
-              {coins} Coins
-            </div>
-            <div className="bg-green-300 text-indigo-800 px-4 py-2 rounded-full font-bold flex items-center transform -rotate-3 hover:rotate-0 transition-transform">
-              <Rocket className="w-5 h-5 mr-2" />
-              Level {level}
-            </div>
-          </div>
-        </header>
+      <header className="mb-8">
+  {/* Site name centered for all screen sizes */}
+  <div className="flex flex-col items-center">
+    <h1 className="text-4xl md:text-5xl font-bold text-yellow-300 drop-shadow-lg mb-4 text-center" 
+      style={{ fontFamily: 'Comic Sans MS, cursive' }}>
+      GreenSpace Explorer
+    </h1>
+  </div>
+
+  {/* Coins and Level buttons */}
+  <div className="flex flex-col md:flex-row items-center justify-center md:justify-between space-y-4 md:space-y-0 md:space-x-4">
+    {/* Coins button */}
+    <div className="bg-yellow-300 text-indigo-800 px-4 py-2 rounded-full font-bold flex items-center transform rotate-3 hover:rotate-0 transition-transform">
+      <Star className="w-5 h-5 mr-2" />
+      {coins} Coins
+    </div>
+
+    {/* Level button */}
+    <div className="bg-green-300 text-indigo-800 px-4 py-2 rounded-full font-bold flex items-center transform -rotate-3 hover:rotate-0 transition-transform">
+      <Rocket className="w-5 h-5 mr-2" />
+      Level {level}
+    </div>
+  </div>
+</header>
+
+
 
         <main className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <section className="bg-white rounded-lg p-6 shadow-lg transform hover:scale-105 transition-transform">
