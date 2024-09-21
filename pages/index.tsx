@@ -8,34 +8,83 @@ interface Resource {
   cost: number
 }
 
+// Add keyframes for animated stars with drift and parallax effects
+const starAnimationStyles = `
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
+  }
+
+  @keyframes drift {
+    0% {
+      transform: translate(0, 0);
+    }
+    50% {
+      transform: translate(10px, -10px);
+    }
+    100% {
+      transform: translate(0, 0);
+    }
+  }
+
+  @keyframes driftLarge {
+    0% {
+      transform: translate(0, 0);
+    }
+    50% {
+      transform: translate(20px, -20px);
+    }
+    100% {
+      transform: translate(0, 0);
+    }
+  }
+
+  @keyframes driftSmall {
+    0% {
+      transform: translate(0, 0);
+    }
+    50% {
+      transform: translate(5px, -5px);
+    }
+    100% {
+      transform: translate(0, 0);
+    }
+  }
+`
+
 const StarryBackground: React.FC = () => (
-  <div className="fixed inset-0 overflow-hidden z-0">
-    <div className="absolute inset-0 bg-indigo-900">
-      {[...Array(50)].map((_, i) => (
-        <div
-          key={i}
-          className="absolute rounded-full bg-white"
-          style={{
-            top: `${Math.random() * 100}%`,
-            left: `${Math.random() * 100}%`,
-            width: `${Math.random() * 3 + 1}px`,
-            height: `${Math.random() * 3 + 1}px`,
-            animation: `twinkle ${Math.random() * 5 + 5}s linear infinite`,
-          }}
-        />
-      ))}
+  <>
+    {/* Injecting the styles directly into the component */}
+    <style>{starAnimationStyles}</style>
+    <div className="fixed inset-0 overflow-hidden z-0">
+      <div className="absolute inset-0 bg-indigo-900">
+        {/* Add 100 stars for more density */}
+        {[...Array(100)].map((_, i) => {
+          // Randomize animation speed, direction, and size
+          const size = Math.random() * 3 + 1 // Star size between 1px and 4px
+          const animationDuration = Math.random() * 10 + 10 // Duration between 10s and 20s
+          const driftAnimation = Math.random() < 0.5 ? 'driftLarge' : 'driftSmall'
+
+          return (
+            <div
+              key={i}
+              className="absolute rounded-full bg-white"
+              style={{
+                top: `${Math.random() * 100}%`,
+                left: `${Math.random() * 100}%`,
+                width: `${size}px`,
+                height: `${size}px`,
+                animation: `twinkle ${Math.random() * 5 + 5}s linear infinite, ${driftAnimation} ${animationDuration}s ease-in-out infinite`,
+              }}
+            />
+          )
+        })}
+      </div>
     </div>
-  </div>
+  </>
 )
 
-// Props for Planet component
-interface PlanetProps {
-  color: string
-  size: string
-  orbitDuration: number
-}
-
-const Planet: React.FC<PlanetProps> = ({ color, size, orbitDuration }) => (
+const Planet: React.FC<{ color: string; size: string; orbitDuration: number }> = ({ color, size, orbitDuration }) => (
   <div
     className={`absolute rounded-full ${color}`}
     style={{
