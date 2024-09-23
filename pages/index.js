@@ -1,51 +1,55 @@
-import { useState } from 'react';
-import { Rocket, Star, Book, Award, HelpCircle, Lock, Unlock } from 'lucide-react';
-import HelpModal from '../components/HelpModal';
-const StarryBackground = () => (
-  <>
-    <div className="fixed inset-0 overflow-hidden z-0">
-      <div className="absolute inset-0 bg-indigo-900">
-        {/* Stars */}
-        {[...Array(300)].map((_, i) => {
-          const size = Math.random() * 3 + 1;
-          const animationDuration = Math.random() * 8 + 4;
-          const driftAnimation = Math.random() < 0.5 ? 'driftLarge' : 'driftSmall';
+"use client"
 
-          return (
-            <div
-              key={i}
-              className="absolute rounded-full bg-white"
-              style={{
-                top: `${Math.random() * 100}%`,
-                left: `${Math.random() * 100}%`,
-                width: `${size}px`,
-                height: `${size}px`,
-                animation: `twinkle ${Math.random() * 3 + 2}s linear infinite, ${driftAnimation} ${animationDuration}s ease-in-out infinite`,
-              }}
-            />
-          );
-        })}
-        {/* Larger stars */}
-        {[...Array(15)].map((_, i) => {
-          const size = Math.random() * 5 + 5;
-          return (
-            <div
-              key={i}
-              className="absolute rounded-full bg-yellow-300"
-              style={{
-                top: `${Math.random() * 100}%`,
-                left: `${Math.random() * 100}%`,
-                width: `${size}px`,
-                height: `${size}px`,
-                animation: `twinkle ${Math.random() * 3 + 1}s linear infinite`,
-              }}
-            />
-          );
-        })}
-      </div>
+import { useState, useEffect } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { Rocket, Star, Book, Award, HelpCircle, Lock, Unlock, User, Mail, Key } from 'lucide-react'
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import {  Alien, Satellite } from 'lucide-react'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import HelpModal from '../components/HelpModal'
+
+const StarryBackground = () => (
+  <div className="fixed inset-0 overflow-hidden z-0">
+    <div className="absolute inset-0 bg-indigo-900">
+      {[...Array(300)].map((_, i) => {
+        const size = Math.random() * 3 + 1
+        const animationDuration = Math.random() * 8 + 4
+        const driftAnimation = Math.random() < 0.5 ? 'driftLarge' : 'driftSmall'
+
+        return (
+          <div
+            key={i}
+            className="absolute rounded-full bg-white"
+            style={{
+              top: `${Math.random() * 100}%`,
+              left: `${Math.random() * 100}%`,
+              width: `${size}px`,
+              height: `${size}px`,
+              animation: `twinkle ${Math.random() * 3 + 2}s linear infinite, ${driftAnimation} ${animationDuration}s ease-in-out infinite`,
+            }}
+          />
+        )
+      })}
+      {[...Array(15)].map((_, i) => {
+        const size = Math.random() * 5 + 5
+        return (
+          <div
+            key={i}
+            className="absolute rounded-full bg-yellow-300"
+            style={{
+              top: `${Math.random() * 100}%`,
+              left: `${Math.random() * 100}%`,
+              width: `${size}px`,
+              height: `${size}px`,
+              animation: `twinkle ${Math.random() * 3 + 1}s linear infinite`,
+            }}
+          />
+        )
+      })}
     </div>
-  </>
-);
+  </div>
+)
 
 const Planet = ({ color, size, orbitDuration }) => (
   <div className="absolute" style={{ animation: `orbit ${orbitDuration}s linear infinite` }}>
@@ -57,49 +61,61 @@ const Planet = ({ color, size, orbitDuration }) => (
         position: 'absolute',
         top: '50%',
         left: '50%',
-        transform: 'translate(-50%, -50%)', // Center the planet
+        transform: 'translate(-50%, -50%)',
       }}
     />
   </div>
-);
+)
 
 
-const Home = () => {
-  const [coins, setCoins] = useState(100);
-  const [level, setLevel] = useState(1);
-  const [unlockedResources, setUnlockedResources] = useState([]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [resourceToUnlock, setResourceToUnlock] = useState(null);
-  const [isHelpModalOpen, setIsHelpModalOpen] = useState(false); // New state for help modal
+export default function Home() {
+  const [coins, setCoins] = useState(100)
+  const [level, setLevel] = useState(1)
+  const [unlockedResources, setUnlockedResources] = useState([])
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [resourceToUnlock, setResourceToUnlock] = useState(null)
+  const [isHelpModalOpen, setIsHelpModalOpen] = useState(false)
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false)
 
   const resources = [
     { id: 1, name: "Space Explorer's Handbook", cost: 50 },
     { id: 2, name: "Virtual Greenhouse Tour", cost: 75 },
     { id: 3, name: "Eco-Hero Sticker Pack", cost: 30 },
-  ];
+  ]
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      const timer = setTimeout(() => {
+        setIsLoginModalOpen(true)
+      }, 2000)
+      return () => clearTimeout(timer)
+    }
+  }, [isLoggedIn])
 
   const unlockResource = (resource) => {
     if (coins >= resource.cost && !unlockedResources.includes(resource.id)) {
-      setResourceToUnlock(resource);
-      setIsModalOpen(true);
+      setResourceToUnlock(resource)
+      setIsModalOpen(true)
     }
-  };
+  }
+
   const toggleHelpModal = () => {
-    setIsHelpModalOpen(!isHelpModalOpen);
-  };
+    setIsHelpModalOpen(!isHelpModalOpen)
+  }
 
   const confirmUnlock = () => {
     if (resourceToUnlock) {
-      setCoins(coins - resourceToUnlock.cost);
-      setUnlockedResources([...unlockedResources, resourceToUnlock.id]);
-      setResourceToUnlock(null);
-      setIsModalOpen(false);
+      setCoins(coins - resourceToUnlock.cost)
+      setUnlockedResources([...unlockedResources, resourceToUnlock.id])
+      setResourceToUnlock(null)
+      setIsModalOpen(false)
     }
-  };
+  }
 
   const cancelUnlock = () => {
-    setIsModalOpen(false);
-  };
+    setIsModalOpen(false)
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-indigo-400 to-purple-600 p-8 relative overflow-hidden">
@@ -243,21 +259,23 @@ const Home = () => {
             </div>
           </div>
         )}
-      {/* Help Modal */}
-      <HelpModal isOpen={isHelpModalOpen} onClose={toggleHelpModal} />
 
+        {/* Help Modal */}
+        <HelpModal isOpen={isHelpModalOpen} onClose={toggleHelpModal} />
+
+        {/* Login/Register Modal */}
+        <LoginRegisterModal isOpen={isLoginModalOpen} onClose={() => setIsLoginModalOpen(false)} />
 
         <footer className="mt-8 text-center">
-        <button
-          onClick={toggleHelpModal} // Updated to handle click
-          className="bg-yellow-400 text-indigo-800 px-6 py-3 rounded-full font-bold text-lg hover:bg-yellow-300 transition-colors flex items-center mx-auto transform hover:scale-110 transition-transform"
-        >      <HelpCircle className="w-6 h-6 mr-2" />
+          <button
+            onClick={toggleHelpModal}
+            className="bg-yellow-400 text-indigo-800 px-6 py-3 rounded-full font-bold text-lg hover:bg-yellow-300 transition-colors flex items-center mx-auto transform hover:scale-110 transition-transform"
+          >
+            <HelpCircle className="w-6 h-6 mr-2" />
             Need Help?
           </button>
         </footer>
       </div>
     </div>
-  );
-};
-
-export default Home;
+  )
+}

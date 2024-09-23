@@ -9,10 +9,26 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@radix-ui/react-avatar": "^1.1.0",
+    "@radix-ui/react-progress": "^1.1.0",
+    "@radix-ui/react-slot": "^1.1.0",
+    "@radix-ui/react-tabs": "^1.1.0",
+    "@radix-ui/react-toast": "^1.2.1",
+    "@radix-ui/react-tooltip": "^1.1.2",
+    "@react-three/drei": "^9.112.1",
+    "@react-three/fiber": "^8.17.7",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.1",
+    "framer": "^2.4.1",
+    "framer-motion": "^10.18.0",
     "lucide-react": "^0.445.0",
+    "motion": "^10.18.0",
     "next": "14.2.13",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "tailwind-merge": "^2.5.2",
+    "tailwindcss-animate": "^1.0.7",
+    "three": "^0.168.0"
   },
   "devDependencies": {
     "@types/node": "^20",
