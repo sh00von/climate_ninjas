@@ -264,7 +264,7 @@ export default function Home() {
         <HelpModal isOpen={isHelpModalOpen} onClose={toggleHelpModal} />
 
         {/* Login/Register Modal */}
-        <LoginRegisterModal isOpen={isLoginModalOpen} onClose={() => setIsLoginModalOpen(false)} />
+        {/* <LoginRegisterModal isOpen={isLoginModalOpen} onClose={() => setIsLoginModalOpen(false)} /> */}
 
         <footer className="mt-8 text-center">
           <button
