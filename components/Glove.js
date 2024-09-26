@@ -3,8 +3,9 @@ import { useTexture } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import PropTypes from 'prop-types';
 import { Html } from '@react-three/drei';
+import { Loader, AlertTriangle } from 'lucide-react'; // Add icons for loading and error states
 
-const Glove = ({ textureUrl }) => {
+const Glove = ({ textureUrl, rotationSpeed = 0.001 }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const globeRef = useRef(); // For controlling rotation
@@ -19,7 +20,7 @@ const Glove = ({ textureUrl }) => {
   // Apply continuous rotation to the globe
   useFrame(() => {
     if (globeRef.current) {
-      globeRef.current.rotation.y += 0.001; // Slow rotation on Y-axis
+      globeRef.current.rotation.y += rotationSpeed; // Dynamic rotation speed
     }
   });
 
@@ -30,7 +31,10 @@ const Glove = ({ textureUrl }) => {
         <sphereGeometry args={[1, 32, 32]} />
         <meshBasicMaterial color="red" />
         <Html center>
-          <div style={{ color: 'white' }}>Failed to load texture</div>
+          <div style={{ color: 'white', textAlign: 'center' }}>
+            <AlertTriangle className="w-8 h-8 mb-2" />
+            <span>Failed to load texture</span>
+          </div>
         </Html>
       </mesh>
     );
@@ -43,14 +47,17 @@ const Glove = ({ textureUrl }) => {
         <sphereGeometry args={[1, 32, 32]} />
         <meshBasicMaterial color="lightgray" />
         <Html center>
-          <div style={{ color: 'black' }}>Loading...</div>
+          <div style={{ color: 'black', textAlign: 'center' }}>
+            <Loader className="animate-spin w-8 h-8 mb-2" />
+            <span>Loading...</span>
+          </div>
         </Html>
       </mesh>
     );
   }
 
   return (
-    <mesh ref={globeRef} rotation={[0, 0.5, 0]} scale={.8}>
+    <mesh ref={globeRef} rotation={[0, 0.5, 0]} scale={0.8}>
       <sphereGeometry args={[1, 64, 64]} /> {/* Higher resolution sphere */}
       <meshStandardMaterial map={texture} />
     </mesh>
@@ -60,6 +67,7 @@ const Glove = ({ textureUrl }) => {
 // PropTypes for type checking
 Glove.propTypes = {
   textureUrl: PropTypes.string.isRequired,
+  rotationSpeed: PropTypes.number, // Optional prop for rotation speed
 };
 
 export default Glove;

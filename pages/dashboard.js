@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Book, Award, Unlock } from "lucide-react";
+import { Book, Award, Unlock, ExternalLink, Map } from "lucide-react";
 import Link from "next/link";
 import StarryBackground from "../components/StarryBackground";
 import Header from "../components/Header";
@@ -7,6 +7,7 @@ import Footer from "../components/Footer";
 import { lessons } from "../data/lesson";
 import quizData from "../data/quiz";
 import Head from "next/head";
+import { map } from "../data/map"; // Ensure this imports your map data correctly
 
 export default function Home() {
   const [coins, setCoins] = useState(() => {
@@ -17,33 +18,17 @@ export default function Home() {
     return 0; // Fallback for SSR or if window is not defined
   });
 
-  const [unlockedResources, setUnlockedResources] = useState([]);
   const [completedLessons, setCompletedLessons] = useState([]); // State for completed lessons
   const [completedQuizzes, setCompletedQuizzes] = useState([]); // State for completed quizzes
-
-  const resources = [
-    { id: 1, name: "Space Explorer's Handbook" },
-    { id: 2, name: "Virtual Greenhouse Tour" },
-    { id: 3, name: "Eco-Hero Sticker Pack" },
-  ];
-
-  const unlockResource = (resource) => {
-    if (!unlockedResources.includes(resource.id)) {
-      setUnlockedResources([...unlockedResources, resource.id]);
-    }
-  };
 
   useEffect(() => {
     // Only run this code in the browser
     if (typeof window !== "undefined") {
-      // Load completed lessons and level from localStorage
-      const completedLessons =
-        JSON.parse(localStorage.getItem("completedLessons")) || [];
+      // Load completed lessons and quizzes from localStorage
+      const completedLessons = JSON.parse(localStorage.getItem("completedLessons")) || [];
       setCompletedLessons(completedLessons);
 
-      // Load completed quizzes from localStorage
-      const completedQuizzes =
-        JSON.parse(localStorage.getItem("completedQuizzes")) || [];
+      const completedQuizzes = JSON.parse(localStorage.getItem("completedQuizzes")) || [];
       setCompletedQuizzes(completedQuizzes);
     }
   }, []);
@@ -59,10 +44,7 @@ export default function Home() {
     if (!completedQuizzes.includes(quizId)) {
       const newCompletedQuizzes = [...completedQuizzes, quizId];
       setCompletedQuizzes(newCompletedQuizzes);
-      localStorage.setItem(
-        "completedQuizzes",
-        JSON.stringify(newCompletedQuizzes)
-      );
+      localStorage.setItem("completedQuizzes", JSON.stringify(newCompletedQuizzes));
     }
   };
 
@@ -73,8 +55,50 @@ export default function Home() {
       </Head>
       <StarryBackground />
       <div className="max-w-4xl mx-auto relative z-10">
-        <Header coins={coins} /> {/* Pass coins and level to Header */}
+        <Header coins={coins} />
         <main className="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+          {/* Interactive Maps Section */}
+          <section className="bg-white rounded-lg p-6 shadow-lg col-span-full transform hover:scale-105 transition-transform">
+            <h2 className="text-2xl font-bold mb-4 text-indigo-800 flex items-center">
+              <Map className="w-6 h-6 mr-2" />
+              Interactive Maps
+            </h2>
+            <p className="text-gray-600 mb-4">
+              Explore the interactive maps below. Click on any resource to unlock it and gain valuable insights!
+            </p>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {map.map((resource) => (
+                <div
+                  key={resource.id}
+                  className="bg-purple-100 p-4 rounded-lg border-2 border-purple-300 transform transition-transform hover:scale-105"
+                >
+                  <h3 className="font-semibold text-purple-800">{resource.name}</h3>
+                  <p className="text-sm text-gray-500 mb-2">{resource.description}</p>
+                  
+                  {/* Placeholder image */}
+                  <img
+                   src={resource.image}
+                    alt={`${resource.name} map`}
+                    className="w-full h-32 object-cover rounded-lg mb-4" // Adjusted margin for spacing
+                  />
+                  
+                  {/* Button positioned below the image */}
+                  <Link href={resource.mapLink} passHref>
+  <button className="btn w-full px-4 py-2 rounded-full font-bold text-white bg-green-500 hover:bg-green-600 transition-colors">
+    <span className="flex items-center justify-center">
+      <ExternalLink className="w-4 h-4 mr-1" />
+      Open Map
+    </span>
+  </button>
+</Link>
+
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* Study Materials Section */}
           <section className="bg-white rounded-lg p-6 shadow-lg transform hover:scale-105 transition-transform">
             <h2 className="text-2xl font-bold mb-4 text-indigo-800 flex items-center">
               <Book className="w-6 h-6 mr-2" />
@@ -107,6 +131,7 @@ export default function Home() {
             </div>
           </section>
 
+          {/* Quizzes Section */}
           <section className="bg-white rounded-lg p-6 shadow-lg transform hover:scale-105 transition-transform">
             <h2 className="text-2xl font-bold mb-4 text-indigo-800 flex items-center">
               <Award className="w-6 h-6 mr-2" />
@@ -141,40 +166,6 @@ export default function Home() {
             </div>
           </section>
 
-          <section className="bg-white rounded-lg p-6 shadow-lg col-span-full transform hover:scale-105 transition-transform">
-            <h2 className="text-2xl font-bold mb-4 text-indigo-800 flex items-center">
-              <Unlock className="w-6 h-6 mr-2" />
-              Unlockable Resources
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {resources.map((resource) => (
-                <div
-                  key={resource.id}
-                  className="bg-purple-100 p-4 rounded-lg border-2 border-purple-300"
-                >
-                  <h3 className="font-semibold text-purple-800">
-                    {resource.name}
-                  </h3>
-                  <button
-                    onClick={() => unlockResource(resource)}
-                    disabled={unlockedResources.includes(resource.id)}
-                    className={`px-4 py-2 rounded-full font-bold text-white ${
-                      unlockedResources.includes(resource.id)
-                        ? "bg-green-500"
-                        : "bg-purple-500 hover:bg-purple-600"
-                    }`}
-                  >
-                    <span className="flex items-center">
-                      <Unlock className="w-4 h-4 mr-1" />
-                      {unlockedResources.includes(resource.id)
-                        ? "Open"
-                        : "Open"}
-                    </span>
-                  </button>
-                </div>
-              ))}
-            </div>
-          </section>
         </main>
         <Footer />
       </div>

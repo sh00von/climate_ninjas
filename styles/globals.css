@@ -126,7 +126,26 @@ html {
   background-color: #003496; /* Set this to match your app's background color */
   min-height: 100vh; /* Ensures full screen height to avoid flicker */
 }
+/* ===== Scrollbar CSS ===== */
+  /* Firefox */
+  * {
+    scrollbar-width: auto;
+    scrollbar-color: #371683 #ffffff;
+  }
 
+  /* Chrome, Edge, and Safari */
+  *::-webkit-scrollbar {
+    width: 16px;
+  }
+
+  *::-webkit-scrollbar-track {
+    background: #ffffff;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background-color: #371683;
+    border-radius: 10px;
+  }
 .page-motion-container {
   /* Ensure the container inherits any necessary styling to avoid black flickers */
   width: 100%;

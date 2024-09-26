@@ -1,7 +1,7 @@
 import { Info, ExternalLink } from 'lucide-react';
 import React, { useRef } from "react";
 import { Canvas } from "@react-three/fiber";
-import Glove from "../components/Glove";
+import Glove from "../../components/Glove";
 import { OrbitControls } from "@react-three/drei";
 import { Html } from "@react-three/drei";
 
