@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Rocket, User, Lock, Mail, Star } from 'lucide-react';
 import StarryBackground from '@/components/StarryBackground';
 import { ToastContainer, toast } from 'react-toastify';
@@ -13,8 +13,15 @@ export default function LoginRegisterTabs() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-  
+
   const router = useRouter(); // Initialize router for navigation
+
+  // Redirect to /dashboard if already logged in
+  useEffect(() => {
+    if (localStorage.getItem('login') === 'true') {
+      router.push('/dashboard'); // Redirect to the dashboard if already logged in
+    }
+  }, [router]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -25,6 +32,10 @@ export default function LoginRegisterTabs() {
       const userInfo = { username, email, password };
       localStorage.setItem('userInfo', JSON.stringify(userInfo));
       toast.success('Registration successful!'); // Show success toast
+
+      // Switch to login tab after registration
+      setActiveTab('login');
+      toast.info('Please log in with your new account.');
 
       // Reset form fields
       setUsername('');
@@ -39,7 +50,7 @@ export default function LoginRegisterTabs() {
       if (storedUserInfo && storedUserInfo.email === email && storedUserInfo.password === password) {
         localStorage.setItem('login', 'true'); // Set login flag in local storage
         toast.success('Login successful!'); // Show success toast
-        router.push('./'); // Redirect to index.js
+        router.push('/dashboard'); // Redirect to /dashboard after login
       } else {
         setErrorMessage('Invalid credentials. Please try again.');
         toast.error('Invalid credentials. Please try again.'); // Show error toast

@@ -28,6 +28,7 @@
     "mongoose": "^8.6.3",
     "motion": "^10.18.0",
     "next": "14.2.13",
+    "nprogress": "^0.2.0",
     "react": "^18",
     "react-dom": "^18",
     "react-toastify": "^10.0.5",

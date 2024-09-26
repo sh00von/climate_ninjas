@@ -14,7 +14,7 @@ const LessonPage = () => {
   const lesson = lessons.find((lesson) => lesson.id === lessonId);
 
   if (!lesson) {
-    return <div className="text-center text-red-500">Lesson not found.</div>;
+    return <div className="text-center text-red-500 min-h-screen">Lesson not found.</div>;
   }
 
   const [level, setLevel] = useState(1);
@@ -76,7 +76,7 @@ const LessonPage = () => {
 
     // Redirect to home after 2 seconds
     setTimeout(() => {
-      router.push('/'); // Adjust the route according to your application's structure
+      router.push('/dashboard'); // Adjust the route according to your application's structure
     }, 2000);
   };
 

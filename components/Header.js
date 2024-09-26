@@ -101,7 +101,7 @@ const levelNames = {
   return (
     <header className="mb-8">
       <div className="flex flex-col items-center mb-6">
-<Link href="/">       <h1
+<Link href="/dashboard">       <h1
           className="text-4xl md:text-5xl font-bold text-yellow-300 drop-shadow-lg mb-2 text-center"
           style={{ fontFamily: 'Comic Sans MS, cursive' }}
         >

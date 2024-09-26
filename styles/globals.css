@@ -121,6 +121,18 @@ body {
 html {
   scroll-behavior: smooth;
 }
+/* globals.css */
+.app-container {
+  background-color: #003496; /* Set this to match your app's background color */
+  min-height: 100vh; /* Ensures full screen height to avoid flicker */
+}
+
+.page-motion-container {
+  /* Ensure the container inherits any necessary styling to avoid black flickers */
+  width: 100%;
+  min-height: 100vh;
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;
