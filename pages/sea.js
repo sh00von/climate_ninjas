@@ -1,5 +1,13 @@
 import { Info, ExternalLink } from 'lucide-react';
+import React, { useRef } from "react";
+import { Canvas } from "@react-three/fiber";
+import Glove from "../components/Glove";
+import { OrbitControls } from "@react-three/drei";
+import { Html } from "@react-three/drei";
 
+
+  // Define the image URL (can come from props, API, or CMS)
+  const textureUrl = "/sea.webp";
 const StarryBackground = () => (
   <div className="fixed inset-0 overflow-hidden z-0">
     <div className="absolute inset-0 bg-indigo-900">
@@ -21,6 +29,16 @@ const StarryBackground = () => (
 );
 
 export default function NASASeaLevelPage() {
+  const controlsRef = useRef();
+
+// Custom loading overlay
+const Loader = () => (
+  <Html center>
+    <div style={{ color: "white", fontSize: "24px", textAlign: "center" }}>
+      Loading...
+    </div>
+  </Html>
+);
   return (
     <div className="min-h-screen bg-gradient-to-b from-indigo-400 to-purple-600 p-4 md:p-8 relative overflow-hidden">
       <StarryBackground />
@@ -46,14 +64,28 @@ export default function NASASeaLevelPage() {
               Interactive visualization by NASA's Global Climate Change: Vital Signs of the Planet
             </p>
           </div>
-          <div className="p-4">
-            <div className="aspect-video rounded-lg overflow-hidden shadow-inner">
-              <iframe
-                src="https://eyes.nasa.gov/apps/earth/#/vital-signs/sea-level/ocean-climate-measurements-monthly"
-                title="NASA Sea Level Data Visualization"
-                className="w-full h-full border-0"
-                allowFullScreen
-              />
+          <div className="p-4 " >
+            <div className="aspect-video rounded-lg overflow-hidden shadow-inner" style={{  background: "#1e1e1e" }}>
+               {/* 3D Scene */}
+               <Canvas shadows camera={{ position: [0, 0, 2], fov: 50 }}>  {/* Camera closer to the globe */}
+               <ambientLight intensity={0.8} />
+        <directionalLight position={[5, 5, 5]} intensity={2} />
+        <pointLight position={[-10, -10, -10]} intensity={0.5} />
+
+        {/* 3D Glove Component with dynamic texture URL */}
+        <React.Suspense fallback={<Loader />}>
+          <Glove textureUrl={textureUrl} />
+        </React.Suspense>
+
+        {/* Orbit Controls - Allow Zooming */}<OrbitControls
+  ref={controlsRef}
+  enableZoom={true}
+  maxPolarAngle={Math.PI / 2}  // Restrict vertical rotation to avoid flipping
+  minDistance={0.5}            // Minimum distance to bring the camera closer
+  maxDistance={5}              // Adjust max distance as needed
+/>
+
+      </Canvas>
             </div>
             <div className="mt-4 text-sm text-indigo-700">
               <p>
