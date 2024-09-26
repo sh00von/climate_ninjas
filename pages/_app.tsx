@@ -30,7 +30,7 @@ export default function App({ Component, pageProps, router }: AppProps) {
 
   useEffect(() => {
     // Define pages that do not require authentication
-    const excludedPages = ["/auth", "/home"];
+    const excludedPages = ["/auth", "/"];
 
     // Check if the user is authenticated
     const isLoggedIn = localStorage.getItem("login");
