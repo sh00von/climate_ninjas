@@ -2,7 +2,7 @@
 import Link from 'next/link'
 import React, { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { Rocket, Book, Award, Globe, Zap, Users, Star, Sun, Cloud, Wind, Droplet, ThermometerSun, Factory, TreeDeciduous, Leaf, Recycle, Lightbulb } from 'lucide-react'
+import { Rocket, Book,ArrowDownToDot , Award, Globe, Zap, Users, Star, Sun, Cloud, Wind, Droplet, ThermometerSun, Factory, TreeDeciduous, Leaf, Recycle, Lightbulb } from 'lucide-react'
 
 const UpdatedLandingPage = () => {
   const [scrollY, setScrollY] = useState(0)
@@ -124,11 +124,21 @@ const UpdatedLandingPage = () => {
               </motion.div>
             </motion.div>
           </div>
+          
         </div>
+        <Link href="#section3"><div className="flex items-center justify-center ">
+  <motion.div 
+    className="absolute mt-8"
+    animate={{ y: [0, -20, 0] }}
+    transition={{ duration: 2, repeat: Infinity }}
+  >
+    <ArrowDownToDot className="w-16 h-16  text-blue-300" />
+  </motion.div>
+        </div></Link>
       </section>
 
       {/* Features Section */}
-      <section className="py-32 bg-gradient-to-b from-purple-900 to-slate-900">
+      <section className="py-32 bg-gradient-to-b from-purple-900 to-slate-900" id="section3">
         <div className="container mx-auto px-4">
           <motion.h2 
             className="text-5xl md:text-6xl font-bold mb-20 text-center text-blue-300"
@@ -158,11 +168,19 @@ const UpdatedLandingPage = () => {
               delay={0.6}
             />
           </div>
-        </div>
+        </div>        <Link href="#section4"><div className="flex items-center justify-center ">
+  <motion.div 
+    className="absolute mt-8"
+    animate={{ y: [0, -20, 0] }}
+    transition={{ duration: 2, repeat: Infinity }}
+  >
+    <ArrowDownToDot className="w-16 h-16  text-blue-300" />
+  </motion.div>
+        </div></Link>
       </section>
 
       {/* Climate Action: Causes, Effects, and Solutions Section */}
-      <section className="py-32 bg-gradient-to-b from-slate-900 to-purple-900">
+      <section className="py-32 bg-gradient-to-b from-slate-900 to-purple-900" id="section4">
         <div className="container mx-auto px-4">
           <motion.h2 
             className="text-5xl md:text-6xl font-bold mb-20 text-center text-green-300"
@@ -210,11 +228,19 @@ const UpdatedLandingPage = () => {
               delay={0.6}
             />
           </div>
-        </div>
+        </div>        <Link href="#section5"><div className="flex items-center justify-center ">
+  <motion.div 
+    className="absolute mt-8"
+    animate={{ y: [0, -20, 0] }}
+    transition={{ duration: 2, repeat: Infinity }}
+  >
+    <ArrowDownToDot className="w-16 h-16  text-blue-300" />
+  </motion.div>
+        </div></Link>
       </section>
 
       {/* Gamification Section */}
-      <section className="py-32 bg-gradient-to-b from-purple-900 to-slate-900">
+      <section className="py-32 bg-gradient-to-b from-purple-900 to-slate-900" id="section5">
         <div className="container mx-auto px-4">
           <motion.h2 
             className="text-5xl md:text-6xl font-bold mb-20 text-center text-blue-300"
@@ -244,11 +270,19 @@ const UpdatedLandingPage = () => {
               delay={0.4}
             />
           </div>
-        </div>
+        </div>        <Link href="#section6"><div className="flex items-center justify-center ">
+  <motion.div 
+    className="absolute mt-8"
+    animate={{ y: [0, -20, 0] }}
+    transition={{ duration: 2, repeat: Infinity }}
+  >
+    <ArrowDownToDot className="w-16 h-16  text-blue-300" />
+  </motion.div>
+        </div></Link>
       </section>
 
       {/* Call to Action */}
-      <section className="py-32 text-center bg-gradient-to-b from-slate-900 to-purple-900">
+      <section className="py-32 text-center bg-gradient-to-b from-slate-900 to-purple-900" id="section6">
         <motion.h2 
           className="text-5xl md:text-6xl font-bold mb-8 text-green-300"
           initial={{ opacity: 0, y: 50 }}
