@@ -311,13 +311,14 @@ const UpdatedLandingPage = () => {
         >
           Join thousands of space explorers on the mission of a lifetime!
         </motion.p>
+        <Link href="/auth">
         <motion.button
           className="bg-gradient-to-r from-green-400 to-blue-500 hover:from-green-500 hover:to-blue-600 text-white font-bold py-4 px-8 rounded-full text-xl transition-all duration-300 transform hover:scale-105 shadow-lg"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >
           Blast Off into Adventure!
-        </motion.button>
+        </motion.button></Link>
       </section>
 
       {/* Footer */}

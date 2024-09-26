@@ -1,11 +1,20 @@
-import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
-import { ChevronRight, ChevronLeft, Star, Rocket, CheckCircle, Book, Award } from 'lucide-react';
-import { lessons } from '../../data/lesson';
-import StarryBackground from '@/components/StarryBackground';
-import Head from 'next/head';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
+import React, { useState, useEffect } from "react";
+import { useRouter } from "next/router";
+import {
+  ChevronRight,
+  ChevronLeft,
+  Star,
+  Rocket,
+  CheckCircle,
+  Book,
+  Award,
+} from "lucide-react";
+import { lessons } from "../../data/lesson";
+import StarryBackground from "@/components/StarryBackground";
+import Head from "next/head";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+
 const LessonPage = () => {
   const router = useRouter();
   const { id } = router.query;
@@ -14,13 +23,17 @@ const LessonPage = () => {
   const lesson = lessons.find((lesson) => lesson.id === lessonId);
 
   if (!lesson) {
-    return <div className="text-center text-red-500 min-h-screen">Lesson not found.</div>;
+    return (
+      <div className="text-center text-red-500 min-h-screen">
+        Lesson not found.
+      </div>
+    );
   }
 
   const [level, setLevel] = useState(1);
   const [coins, setCoins] = useState(() => {
     // Load coins from localStorage, default to 0 if not found
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       return JSON.parse(localStorage.getItem("totalPoints")) || 0;
     }
     return 0; // Fallback for SSR or if window is not defined
@@ -38,7 +51,8 @@ const LessonPage = () => {
   }, [currentPoint, lesson]);
 
   useEffect(() => {
-    const completedLessons = JSON.parse(localStorage.getItem("completedLessons")) || [];
+    const completedLessons =
+      JSON.parse(localStorage.getItem("completedLessons")) || [];
     setCompletedPoints(completedLessons);
   }, []);
 
@@ -58,11 +72,15 @@ const LessonPage = () => {
   };
 
   const handleComplete = () => {
-    const completedLessons = JSON.parse(localStorage.getItem("completedLessons")) || [];
-    
+    const completedLessons =
+      JSON.parse(localStorage.getItem("completedLessons")) || [];
+
     if (!completedLessons.includes(lessonId)) {
       completedLessons.push(lessonId);
-      localStorage.setItem("completedLessons", JSON.stringify(completedLessons));
+      localStorage.setItem(
+        "completedLessons",
+        JSON.stringify(completedLessons)
+      );
     }
 
     if (!completedPoints.includes(currentPoint)) {
@@ -73,11 +91,6 @@ const LessonPage = () => {
     const currentCoins = JSON.parse(localStorage.getItem("totalPoints")) || 0;
     localStorage.setItem("totalPoints", currentCoins + 50); // Add 50 points
     setModalVisible(true);
-
-    // Redirect to home after 2 seconds
-    setTimeout(() => {
-      router.push('/dashboard'); // Adjust the route according to your application's structure
-    }, 2000);
   };
 
   // Modal component
@@ -100,18 +113,30 @@ const LessonPage = () => {
             />
           ))}
         </div>
-        <h2 className="text-3xl font-bold mb-6 text-yellow-300 text-center" style={{ fontFamily: 'Comic Sans MS, cursive' }}>
+        <h2
+          className="text-3xl font-bold mb-6 text-yellow-300 text-center"
+          style={{ fontFamily: "Comic Sans MS, cursive" }}
+        >
           Congratulations!
         </h2>
         <div className="text-lg text-white text-center">
-          You’ve earned <span className="font-bold text-yellow-300">50 points!</span>
+          You’ve earned{" "}
+          <span className="font-bold text-yellow-300">50 points!</span>
         </div>
-        <div className="flex justify-center mt-8">
+        <div className="flex justify-center mt-8 space-x-4">
+          {/* Quiz Now Button */}
           <button
-            onClick={() => setModalVisible(false)} // Close modal if needed (not used in this case since it auto-closes)
+            onClick={() => router.push(`/quiz/${lessonId}`)} // Redirect to quiz page
+            className="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-full font-bold text-lg transform transition-transform focus:outline-none focus:ring-2 focus:ring-green-400"
+          >
+            Give Quiz Now
+          </button>
+          {/* Not Now Button */}
+          <button
+            onClick={() => router.push("/dashboard")} // Redirect to dashboard
             className="bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-full font-bold text-lg transform transition-transform focus:outline-none focus:ring-2 focus:ring-red-400"
           >
-            Close
+            Not Now
           </button>
         </div>
       </div>
@@ -121,13 +146,18 @@ const LessonPage = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-indigo-400 to-purple-600 p-8 relative overflow-hidden">
       <Head>
-        <title>{lesson.points[currentPoint].heading} - {lesson.title}</title>
-        <meta name="description" content={`Learn about ${lesson.points[currentPoint].heading} in ${lesson.title}.`} />
+        <title>
+          {lesson.points[currentPoint].heading} - {lesson.title}
+        </title>
+        <meta
+          name="description"
+          content={`Learn about ${lesson.points[currentPoint].heading} in ${lesson.title}.`}
+        />
       </Head>
       <StarryBackground />
       <div className="max-w-4xl mx-auto relative z-10">
-     
-      <Header coins={coins} level={level} /> {/* Pass coins and level to Header */}
+        <Header coins={coins} level={level} />{" "}
+        {/* Pass coins and level to Header */}
         <main className="bg-white rounded-3xl p-8 shadow-lg">
           <div className="mb-8">
             <div className="flex justify-between mb-2">
@@ -136,8 +166,8 @@ const LessonPage = () => {
                   key={index}
                   className={`w-10 h-10 rounded-full flex items-center justify-center ${
                     index <= currentPoint
-                      ? 'bg-green-500 text-white'
-                      : 'bg-gray-200 text-gray-500'
+                      ? "bg-green-500 text-white"
+                      : "bg-gray-200 text-gray-500"
                   }`}
                 >
                   {index < currentPoint ? (

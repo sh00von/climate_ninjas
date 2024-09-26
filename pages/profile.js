@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Award, Users, Trophy, DollarSign } from "lucide-react";
 import Header from "@/components/Header";
-
+import Head from 'next/head'
 const StarryBackground = () => (
   <div className="fixed inset-0 overflow-hidden z-0">
     <div className="absolute inset-0 bg-indigo-900">
@@ -78,6 +78,12 @@ export default function ProfilePage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-indigo-400 to-purple-600 p-4 md:p-8 relative overflow-hidden">
+    <Head>
+    <title>
+    Profile
+    </title>
+    </Head>
+
       <StarryBackground />
       <div className="max-w-4xl mx-auto relative z-10">
         <Header coins={coins} /> {/* Pass coins and level to Header */}

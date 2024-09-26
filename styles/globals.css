@@ -132,6 +132,15 @@ html {
   width: 100%;
   min-height: 100vh;
 }
+/* Custom nprogress styling */
+#nprogress .bar {
+  background: #4caf50; /* Change to your preferred color */
+  height: 5px; /* Adjust the thickness of the bar */
+}
+
+#nprogress .spinner {
+  display: none; /* Hide spinner, only show progress bar */
+}
 
 @layer base {
   :root {
