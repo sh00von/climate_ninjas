@@ -18,7 +18,7 @@ const GlovePage = () => {
   );
 
   // Define the image URL (can come from props, API, or CMS)
-  const textureUrl = "/sea.webp";
+  const textureUrl = "/ozone.webp";
 
   return (
     <div style={{ height: "100vh", background: "#1e1e1e", position: "relative" }}>

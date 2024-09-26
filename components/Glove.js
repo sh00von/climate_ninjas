@@ -2,9 +2,11 @@
 import React, { useState } from "react";
 import { useTexture } from "@react-three/drei";
 
-const Glove = () => {
+const Glove = ({ textureUrl }) => {
   const [loading, setLoading] = useState(true);
-  const texture = useTexture("/sea.webp", () => setLoading(false));
+
+  // Load texture from URL passed as prop
+  const texture = useTexture(textureUrl, () => setLoading(false));
 
   if (loading) {
     return (
