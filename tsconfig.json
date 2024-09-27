@@ -16,6 +16,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "pages/dashboard.js", "pages/done/quiz.js", "pages/done/study.js", "pages/auth.js", "components/Header.js", "pages/lesson/[id].js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "pages/dashboard.js", "pages/done/quiz.js", "pages/done/study.js", "pages/auth.js", "components/Header.js", "pages/lesson/[id].js", "components/AskAIModal.js"],
   "exclude": ["node_modules"]
 }
