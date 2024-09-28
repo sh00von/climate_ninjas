@@ -25,14 +25,7 @@ export default function Custom404() {
         </Link>
       </div>
 
-      {/* Optional: Space illustration */}
-      <div className="mt-12 relative z-10">
-        <img
-          src="/images/space-astronaut.svg" // Replace with your own SVG or PNG
-          alt="Astronaut floating in space"
-          className="w-48"
-        />
-      </div>
+
     </div>
   );
 }
