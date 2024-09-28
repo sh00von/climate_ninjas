@@ -30,8 +30,7 @@ const AskAIModal = ({ isOpen, onClose, suggestedQuestions }) => {
     setTypingIndex(0);
 
     try {
-      const prompt = `Suppose you are a mentor of a Problem Solution Person of Climate Action change in the world, Answer more childish way so children can easily understand, now answer all like that and Answer the following question not in Markdown format with not more than 50 words: ${question}`;
-
+      const prompt = `Imagine you are a mentor guiding students about climate change. Explain the following question using scientific terminology and concepts that remain accessible for 9th to 10th graders. Ensure important terms are bolded, such as **CO2**, **greenhouse gases**, and **sustainability**. Include specific reasons related to climate dynamics and potential solutions involving technology. Your response should be informative and concise, not exceeding 100 words. Here is the question: ${question}`; 
       let result;
       if (image) {
         const imageData = await fileToGenerativePart(image);
@@ -161,19 +160,29 @@ const AskAIModal = ({ isOpen, onClose, suggestedQuestions }) => {
           </button>
         </form>
         {answer && (
-          <div className="bg-indigo-800 bg-opacity-50 p-6 rounded-md mb-6 border border-indigo-400">
-            <h3 className="text-lg font-semibold text-yellow-300 mb-3 flex items-center">
-              <Bot className="w-6 h-6 mr-2 text-green-400" />
-              Cosmic AI Response:
-            </h3>
-            <p className="text-white font-mono">
-              {answer.substring(0, typingIndex)}
-              {typingIndex < answer.length && (
-                <span className="animate-pulse">|</span>
-              )}
-            </p>
-          </div>
+  <div className="bg-indigo-800 bg-opacity-50 p-6 rounded-md mb-6 border border-indigo-400">
+    <h3 className="text-lg font-semibold text-yellow-300 mb-3 flex items-center">
+      <Bot className="w-6 h-6 mr-2 text-green-400" />
+      Cosmic AI Response:
+    </h3>
+    <p className="text-white font-mono">
+      {answer
+        .substring(0, typingIndex)
+        .split(/(\*\*.*?\*\*)/) // Split on bold tags
+        .map((part, index) =>
+          part.match(/\*\*(.*?)\*\*/) ? (
+            <span key={index} className="bg-yellow-300 text-black px-2 py-1 rounded-md">
+              {part.replace(/\*\*(.*?)\*\*/, '$1')} {/* Remove the bold markers */}
+            </span>
+          ) : (
+            part // Just return the part if it doesn't match
+          )
         )}
+      {typingIndex < answer.length && <span className="animate-pulse">|</span>}
+    </p>
+  </div>
+)}
+
         <div className="bg-indigo-800 bg-opacity-50 p-4 rounded-md">
           <h3 className="text-lg font-semibold text-yellow-300 mb-3 flex items-center">
             <Sparkles className="w-5 h-5 mr-2" />
