@@ -157,10 +157,10 @@ export default function Home() {
                     <p className="text-sm text-green-600">
                       Test your knowledge and earn coins!
                     </p>
-                  </Link>
                   {completedQuizzes.includes(quiz.id) && (
                     <p className="text-sm text-gray-600">Completed</p> // Static text for completed quizzes
                   )}
+                  </Link>
                 </div>
               ))}
             </div>

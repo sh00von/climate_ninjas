@@ -1,11 +1,41 @@
 'use client'
 import Link from 'next/link'
-import React, { useState, useEffect } from 'react'
-import { motion } from 'framer-motion'
-import { Rocket, Book, ArrowDownToDot, Award, Globe, Zap, Users, Star, Sun, Cloud, Wind, Droplet, ThermometerSun, Factory, TreeDeciduous, Leaf, Recycle, Lightbulb } from 'lucide-react'
+import React, { useState, useEffect,useRef } from 'react'
+import { motion, useAnimation } from 'framer-motion'
+import { Rocket, BookOpen,Map,Book, ArrowDownToDot, Award, Globe, Zap, Users, Star, Sun, Cloud, Wind, Droplet, ThermometerSun, Factory, TreeDeciduous, Leaf, Recycle, Lightbulb } from 'lucide-react'
 import Head from 'next/head'
 const UpdatedLandingPage = () => {
   const [scrollY, setScrollY] = useState(0)
+  const [isIntersecting, setIsIntersecting] = useState(false)
+  const ref = useRef(null)
+  const controls = useAnimation()
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsIntersecting(entry.isIntersecting)
+      },
+      { threshold: 0.5 } // Adjust this value to change when the button should return to its original position
+    )
+
+    if (ref.current) {
+      observer.observe(ref.current)
+    }
+
+    return () => {
+      if (ref.current) {
+        observer.unobserve(ref.current)
+      }
+    }
+  }, [])
+
+  useEffect(() => {
+    if (isIntersecting) {
+      controls.start({ position: 'static', bottom: 'auto' })
+    } else {
+      controls.start({ position: 'fixed', bottom: '2rem' })
+    }
+  }, [isIntersecting, controls])
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY)
@@ -19,7 +49,7 @@ const UpdatedLandingPage = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-900 via-purple-900 to-slate-900 text-white overflow-hidden">
       <Head>
-        <title>GreenSpace Explorer</title>
+        <title>Climate Ninjas</title>
       </Head>
       {/* Animated star background */}
       <div className="fixed inset-0 pointer-events-none">
@@ -60,15 +90,14 @@ const UpdatedLandingPage = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1 }}
         >
-          GreenSpace Explorer
+          Climate Ninjas
         </motion.h1>
         <motion.p
           className="text-2xl md:text-3xl mb-12 text-blue-200"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5, duration: 1 }}
-        >
-          🌍✨ Embark on an Epic Cosmic Quest to Save Our Planet!
+        >🌍✨ Join the Cosmic Journey to Protect Our Planet!
         </motion.p>
         <Link href="#section2">
           <motion.button
@@ -76,7 +105,8 @@ const UpdatedLandingPage = () => {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
-            Launch Your Eco-Adventure
+            🚀 Start Your Eco-Adventure Today!
+
           </motion.button>
         </Link>
         <div className="flex items-center justify-center">
@@ -109,13 +139,13 @@ const UpdatedLandingPage = () => {
               transition={{ duration: 1, delay: 0.5 }}
             >
               <p className="text-xl mb-8 leading-relaxed text-justify">
-                Imagine a world where every action you take helps heal our planet. 🌎✨ Climate change is not just a challenge; it's an opportunity for you to become a hero in the fight for our future!
-              </p>
+              🌎✨Imagine a world where every action you take helps heal the planet.
+              Climate change isn't just a challenge—it's your opportunity to become a hero in the fight for our shared future!     </p>
               <p className="text-xl mb-8 leading-relaxed text-justify">
-                With our interactive lessons and thrilling space missions, you'll uncover the secrets of climate science while embarking on an epic adventure through the cosmos. 🚀
-              </p>
-              <p className="text-xl leading-relaxed text-justify">
-                Are you ready to join forces with fellow explorers and protect our home? Together, we can create a sustainable future for all life forms across the galaxy! 🌌
+              🚀 With our interactive lessons and thrilling space missions, you'll uncover the secrets of climate science while embarking on an epic journey through the cosmos. 
+              Learn, explore, and make a real impact while enjoying an adventure like no other!  </p>
+              <p className="text-xl leading-relaxed text-justify">🌌 Are you ready to join forces with fellow explorers and protect our planet? 
+              Together, we can build a sustainable future for all life forms—both on Earth and across the galaxy!
               </p>
             </motion.div>
             <motion.div
@@ -157,20 +187,20 @@ const UpdatedLandingPage = () => {
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1 }}
-          >
-            🚀 Explore Our Stellar Features
+          >🚀 Explore Our Features!
           </motion.h2>
           <div className="grid md:grid-cols-3 gap-16">
             <FeatureCard
               icon={<Book className="w-20 h-20 text-green-400" />}
               title="Interactive Lessons"
-              description="Embark on thrilling space missions that teach you about climate change, renewable energy, and sustainable practices. Each lesson is a new adventure waiting to unfold!"
+              description="🚀 Embark on exciting space missions that immerse you in the world of climate change, renewable energy, and sustainable practices."
               delay={0.2}
             />
             <FeatureCard
               icon={<Award className="w-20 h-20 text-yellow-400" />}
               title="Galactic Achievements"
-              description="Conquer space-themed challenges and earn cosmic badges! Showcase your expertise as you level up and become a true climate champion."
+              description="🌌 Learn through engaging lessons, quizzes, and interactive maps as you earn badges and climb the leaderboard.
+Showcase your expertise, level up, and become a true climate champion!"
               delay={0.4}
             />
             <FeatureCard
@@ -200,7 +230,8 @@ const UpdatedLandingPage = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1 }}
           >
-            🌍 Climate Action: Our Cosmic Mission
+           🌍 Climate Action: Our Universal Mission
+
           </motion.h2>
           <div className="grid md:grid-cols-3 gap-16">
             <ClimateCard
@@ -259,28 +290,29 @@ const UpdatedLandingPage = () => {
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1 }}
-          >
-            🌌 Your Intergalactic Adventure Awaits
+          >🌌 Your Interstellar Adventure Awaits!
+
           </motion.h2>
           <div className="grid md:grid-cols-2 gap-16">
-            <GamificationCard
-              title="✨ Earn Stellar Rewards"
-              items={[
-                { icon: <Star className="w-10 h-10 text-yellow-400" />, text: "Collect cosmic coins for eco-friendly missions" },
-                { icon: <Zap className="w-10 h-10 text-blue-400" />, text: "Level up and unlock new planets to explore" },
-                { icon: <Award className="w-10 h-10 text-green-400" />, text: "Earn badges for your intergalactic profile" }
-              ]}
-              delay={0.2}
-            />
-            <GamificationCard
-              title="🌠 Compete Across the Cosmos"
-              items={[
-                { icon: <Users className="w-10 h-10 text-purple-400" />, text: "Form cosmic crews for collaborative challenges" },
-                { icon: <Rocket className="w-10 h-10 text-red-400" />, text: "Race to the top of the galactic leaderboard" },
-                { icon: <Globe className="w-10 h-10 text-blue-400" />, text: "Join global climate action events" }
-              ]}
-              delay={0.4}
-            />
+          <GamificationCard
+  title="✨ Earn Stellar Rewards"
+  items={[
+    { icon: <BookOpen className="w-10 h-10 text-yellow-400" />, text: "Complete lessons and quizzes to earn cosmic coins" },
+    { icon: <Map className="w-10 h-10 text-blue-400" />, text: "Explore a 3D map of the galaxy to discover new missions" },
+    { icon: <Award className="w-10 h-10 text-green-400" />, text: "Earn badges to showcase your achievements in your profile" }
+  ]}
+  delay={0.2}
+/>
+<GamificationCard
+  title="🌠 Compete Across the Cosmos"
+  items={[
+    { icon: <Users className="w-10 h-10 text-purple-400" />, text: "Form teams for collaborative learning challenges" },
+    { icon: <Rocket className="w-10 h-10 text-red-400" />, text: "Compete on the galactic leaderboard to showcase your skills" },
+    { icon: <Globe className="w-10 h-10 text-blue-400" />, text: "Join global events to take action on climate issues" }
+  ]}
+  delay={0.4}
+/>
+
           </div>
         </div>        <Link href="#section6"><div className="flex items-center justify-center ">
           <motion.div
@@ -292,34 +324,68 @@ const UpdatedLandingPage = () => {
           </motion.div>
         </div></Link>
       </section>
-
-      {/* Call to Action */}
-      <section className="py-32 text-center bg-gradient-to-b from-slate-900 to-purple-900" id="section6">
-        <motion.h2
-          className="text-5xl md:text-6xl font-bold mb-8 text-green-300"
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1 }}
-        >
-          🚀 Ready to Save the Planet?
-        </motion.h2>
-        <motion.p
-          className="text-2xl mb-12 text-blue-200"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.5, duration: 1 }}
-        >
-          Join thousands of space explorers on the mission of a lifetime!
-        </motion.p>
+<section
+      ref={ref}
+      className="py-32 text-center bg-gradient-to-b from-slate-900 to-purple-900"
+      id="section6"
+    >
+      <motion.h2
+        className="text-5xl md:text-6xl font-bold mb-8 text-green-300"
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1 }}
+      >
+        🚀 Ready to Save the Planet?
+      </motion.h2>
+      <motion.p
+        className="text-2xl mb-12 text-blue-200"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.5, duration: 1 }}
+      >
+        Join thousands of space explorers on the mission of a lifetime!
+      </motion.p>
+      <motion.div
+        animate={controls}
+        transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+        className="w-full flex justify-center"
+        style={{ zIndex: 10 }}
+      >
         <Link href="/auth">
-        <motion.button
-          className="bg-gradient-to-r from-green-400 to-blue-500 hover:from-green-500 hover:to-blue-600 text-white font-bold py-4 px-8 rounded-full text-xl transition-all duration-300 transform hover:scale-105 shadow-lg"
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-        >
-          Blast Off into Adventure!
-        </motion.button></Link>
-      </section>
+          <motion.button
+            className="relative bg-gradient-to-r from-green-400 to-blue-500 text-white font-bold py-4 px-8 rounded-full text-xl shadow-lg overflow-hidden focus:outline-none focus:ring-4 focus:ring-blue-300 focus:ring-opacity-50"
+            whileHover={{
+              scale: 1.05,
+              boxShadow: "0 0 20px rgba(0, 255, 255, 0.5)"
+            }}
+            whileTap={{ scale: 0.95 }}
+            whileFocus={{
+              boxShadow: "0 0 0 3px rgba(59, 130, 246, 0.5)"
+            }}
+          >
+            <motion.span
+              className="absolute inset-0 bg-gradient-to-r from-green-500 to-blue-600 opacity-0"
+              whileHover={{ opacity: 1 }}
+              transition={{ duration: 0.3 }}
+            />
+            <motion.span
+              className="relative z-10"
+              initial={{ y: 0 }}
+              whileHover={{ y: -5 }}
+              transition={{ type: "spring", stiffness: 400, damping: 10 }}
+            >
+              Blast Off into Adventure!
+            </motion.span>
+            <motion.span
+              className="absolute bottom-0 left-0 w-full h-1 bg-white"
+              initial={{ scaleX: 0 }}
+              whileHover={{ scaleX: 1 }}
+              transition={{ duration: 0.3 }}
+            />
+          </motion.button>
+        </Link>
+      </motion.div>
+    </section>
 
       {/* Footer */}
       {/* <footer className="bg-slate-900 py-12">

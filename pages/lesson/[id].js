@@ -198,9 +198,11 @@ const LessonPage = () => {
               <Award className="w-8 h-8 mr-2 text-yellow-500" />
               {lesson.points[currentPoint].heading}
             </h2>
-            <div className="text-lg text-indigo-700 whitespace-pre-line">
-              {lesson.points[currentPoint].description}
-            </div>
+            <div
+  className="text-lg text-indigo-700 whitespace-pre-line"
+  dangerouslySetInnerHTML={{ __html: lesson.points[currentPoint].description }}
+></div>
+
           </div>
 
           <div className="flex justify-between items-center">
