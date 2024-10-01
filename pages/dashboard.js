@@ -110,7 +110,7 @@ export default function Home() {
                   key={index}
                   className={`p-4 rounded-lg transition-colors border-2 ${
                     completedLessons.includes(lesson.id)
-                      ? "bg-yellow-400 border-gray-400 cursor-not-allowed" // Style for completed lessons
+                      ? "bg-gray-300 border-gray-400 cursor-not-allowed" // Style for completed lessons
                       : "bg-blue-100 border-blue-300 hover:bg-blue-200 cursor-pointer"
                   }`}
                 >
@@ -141,9 +141,9 @@ export default function Home() {
               {quizData.map((quiz, index) => (
                 <div
                   key={index}
-                  className={`bg-green-100 p-4 rounded-lg border-2 transition-colors ${
+                  className={`p-4 rounded-lg border-2 transition-colors ${
                     completedQuizzes.includes(quiz.id)
-                      ? "bg-yellow-400 border-gray-400 cursor-not-allowed" // Style for completed quizzes
+                      ? "bg-gray-300 border-gray-400 cursor-not-allowed" // Style for completed quizzes
                       : "cursor-pointer hover:bg-green-200 border-green-300"
                   }`}
                   onClick={() => {
