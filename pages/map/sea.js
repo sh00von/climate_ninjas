@@ -93,7 +93,16 @@ export default function NASASeaLevelPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-indigo-400 to-purple-600 p-4 md:p-8 relative overflow-hidden">
-      <StarryBackground />
+      <StarryBackground />      <div style={{ zIndex: 1000 }} className="fixed bottom-8 left-0 w-full">
+    <div className="w-full max-w-2xl mx-auto px-4 py-2">
+        <div className="relative w-full h-10 bg-gradient-to-r from-green-500 via-yellow-500 to-red-500 rounded-md shadow-md">
+            {/* Intensity Labels */}
+            <div className="absolute top-full left-0 transform translate-y-1 text-xs font-medium text-gray-700">Low</div>
+            <div className="absolute top-full left-1/2 transform -translate-x-1/2 translate-y-1 text-xs font-medium text-gray-700">Medium</div>
+            <div className="absolute top-full right-0 transform translate-y-1 text-xs font-medium text-gray-700">High</div>
+        </div>
+    </div>
+</div>
       <div className="max-w-6xl mx-auto relative z-10">
         <header className="flex justify-between items-center mb-8">
           <h1 className="text-3xl md:text-4xl font-bold text-yellow-300 drop-shadow-lg" style={{ fontFamily: 'Comic Sans MS, cursive' }}>

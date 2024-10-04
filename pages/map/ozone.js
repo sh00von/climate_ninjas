@@ -49,6 +49,7 @@ const Loader = () => (
 
 const InfoCard = ({ position, onDismiss }) => (
   <Card className={`overflow-hidden transition-shadow duration-300 shadow-xl max-w-sm w-full`}>
+  
     <CardHeader className="bg-gradient-to-r from-blue-500 to-purple-600 text-white p-4 relative">
       <CardTitle className="flex items-center text-lg font-bold">
         <AlertCircle className="mr-2 h-5 w-5" />
@@ -65,7 +66,7 @@ const InfoCard = ({ position, onDismiss }) => (
         </Button>
       )}
     </CardHeader>
-    <CardContent className="p-4">
+    <CardContent className="p-4 bg-white">
       <p className="text-gray-700 mb-3">
         Ready to become an ozone layer expert? Dive into our interactive lesson!
       </p>
@@ -101,6 +102,17 @@ export default function OzoneLayerPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-indigo-400 to-purple-600 p-4 md:p-8 relative overflow-hidden">
       <StarryBackground />
+      <div style={{ zIndex: 1000 }} className="fixed bottom-8 left-0 w-full">
+    <div className="w-full max-w-2xl mx-auto px-4 py-2">
+        <div className="relative w-full h-10 bg-gradient-to-r from-green-500 via-yellow-500 to-red-500 rounded-md shadow-md">
+            {/* Intensity Labels */}
+            <div className="absolute top-full left-0 transform translate-y-1 text-xs font-medium text-gray-700">Low</div>
+            <div className="absolute top-full left-1/2 transform -translate-x-1/2 translate-y-1 text-xs font-medium text-gray-700">Medium</div>
+            <div className="absolute top-full right-0 transform translate-y-1 text-xs font-medium text-gray-700">High</div>
+        </div>
+    </div>
+</div>
+
       <div className="max-w-6xl mx-auto relative z-10">
         <header className="flex justify-between items-center mb-8">
           <h1 className="text-4xl md:text-5xl font-bold text-yellow-300 drop-shadow-lg" style={{ fontFamily: 'Comic Sans MS, cursive' }}>
