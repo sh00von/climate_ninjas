@@ -227,7 +227,7 @@ export default function CarbonFootprintCalculator() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          Carbon Footprint Calculator
+        Carbon footprint Calculator(person/year)
         </motion.h1>
 
         <motion.p
