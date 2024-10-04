@@ -166,7 +166,38 @@ const quizData = [
         correctAnswer: 1,
       },
     ],
-  }
+  },{
+    id: '6',
+    title: 'Eco-Friendly Tips',
+    questions: [
+      {
+        question: "Which of the following is a simple way to conserve energy at home?",
+        options: ["Leaving appliances on standby mode", "Using energy-efficient LED light bulbs", "Running the dishwasher half full", "Keeping the thermostat at maximum heat"],
+        correctAnswer: 1,
+      },
+      {
+        question: "What is a recommended practice to reduce water consumption in daily life?",
+        options: ["Taking long showers", "Washing clothes with hot water", "Fixing leaky faucets", "Using more single-use plastic"],
+        correctAnswer: 2,
+      },
+      {
+        question: "Which of these actions helps reduce single-use plastic waste?",
+        options: ["Using disposable plastic bags", "Opting for reusable shopping bags", "Buying bottled water frequently", "Using plastic straws"],
+        correctAnswer: 1,
+      },
+      {
+        question: "What is an eco-friendly alternative to traditional gasoline-powered cars?",
+        options: ["Electric vehicles (EVs)", "Diesel cars", "Hybrid vehicles", "Motorcycles"],
+        correctAnswer: 0,
+      },
+      {
+        question: "Which of the following household actions contributes to reducing your carbon footprint?",
+        options: ["Using incandescent light bulbs", "Composting organic waste", "Using a leaf blower", "Driving a gas-powered vehicle"],
+        correctAnswer: 1,
+      },
+    ],
+  },
+  
   
   
   

@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react'
-import { HelpCircle, MessageSquare } from 'lucide-react'
+import { HelpCircle, MessageSquare, Leaf } from 'lucide-react'
 import HelpModal from './HelpModal'
 import AskAIModal from './AskAIModal'
+import Link from 'next/link'
 
-const Footer = () => {
+export default function Footer() {
   const [isHelpModalOpen, setIsHelpModalOpen] = useState(false)
   const [isAskAIModalOpen, setIsAskAIModalOpen] = useState(false)
   const [isButtonVisible, setIsButtonVisible] = useState(true)
@@ -58,23 +59,35 @@ const Footer = () => {
           Need Help?
         </button>
 
-        {/* Floating Ask AI button */}
-        <button
-          onClick={toggleAskAIModal}
-          className={`fixed bottom-6 right-6 bg-gradient-to-r from-green-400 to-blue-500 text-white px-6 py-3 rounded-full font-bold text-lg transition-all duration-300 flex items-center shadow-lg transform hover:scale-110 hover:rotate-3 z-50 ${
-            isButtonVisible ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'
-          }`}
-          aria-label="Ask AI"
-        >
-          <MessageSquare className="w-6 h-6 mr-2" />
-          Ask AI
-          <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full animate-pulse">
-            New
-          </span>
-        </button>
+        {/* Floating buttons container */}
+        <div className={`fixed bottom-6 right-6 flex flex-col items-end space-y-4 transition-all duration-300 ${
+          isButtonVisible ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'
+        }`}>
+          {/* Carbon Footprint Calculator button */}
+          <Link href="/calculator" passHref>
+            <button
+              className="bg-gradient-to-r from-green-500 to-green-600 text-white px-6 py-3 rounded-full font-bold text-lg transition-all duration-300 flex items-center shadow-lg transform hover:scale-110 hover:rotate-3 z-50"
+              aria-label="Carbon Footprint Calculator"
+            >
+              <Leaf className="w-6 h-6 mr-2" />
+              Carbon Calculator
+            </button>
+          </Link>
+
+          {/* Ask AI button */}
+          <button
+            onClick={toggleAskAIModal}
+            className="bg-gradient-to-r from-green-400 to-blue-500 text-white px-6 py-3 rounded-full font-bold text-lg transition-all duration-300 flex items-center shadow-lg transform hover:scale-110 hover:rotate-3 z-50"
+            aria-label="Ask AI"
+          >
+            <MessageSquare className="w-6 h-6 mr-2" />
+            Ask AI
+            <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full animate-pulse">
+              New
+            </span>
+          </button>
+        </div>
       </footer>
     </>
   )
 }
-
-export default Footer
