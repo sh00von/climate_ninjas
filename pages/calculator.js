@@ -2,16 +2,17 @@
 
 import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Rocket, Lightbulb, Utensils, ShoppingBag, Recycle, Droplet, ChevronLeft, ChevronRight } from 'lucide-react'
+import { Car, Train, Plane, Zap, Flame, Leaf, Utensils, ShoppingBag, Recycle, Droplet } from 'lucide-react'
 import Link from 'next/link'
 import { Slider } from "@/components/ui/slider"
 import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
-import { Card, CardContent } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
+import { Switch } from "@/components/ui/switch"
 
-const frequencyOptions = ['NEVER', 'RARELY', 'SOMETIMES', 'OFTEN', 'VERY OFTEN']
+const frequencyOptions = ['Never', 'Rarely', 'Sometimes', 'Often', 'Very Often']
 
 export default function CarbonFootprintCalculator() {
   const [currentStep, setCurrentStep] = useState(0)
@@ -84,22 +85,26 @@ export default function CarbonFootprintCalculator() {
 
   const steps = [
     {
-      title: "Space Travel",
-      icon: <Rocket className="w-12 h-12" />,
+      title: "Transportation",
+      description: "Evaluate your travel habits",
+      icon: <Car className="w-6 h-6" />,
       content: (
         <>
           <FrequencySlider
-            label="Cosmic Car Usage"
+            label="Personal Vehicle Usage"
+            icon={<Car className="w-4 h-4" />}
             value={formData.transportation.car}
             onChange={(value) => updateFormData('transportation', 'car', value)}
           />
           <FrequencySlider
-            label="Interplanetary Public Transit"
+            label="Public Transit Usage"
+            icon={<Train className="w-4 h-4" />}
             value={formData.transportation.publicTransit}
             onChange={(value) => updateFormData('transportation', 'publicTransit', value)}
           />
           <FrequencySlider
-            label="Galactic Flight Frequency"
+            label="Air Travel Frequency"
+            icon={<Plane className="w-4 h-4" />}
             value={formData.transportation.flight}
             onChange={(value) => updateFormData('transportation', 'flight', value)}
           />
@@ -108,90 +113,101 @@ export default function CarbonFootprintCalculator() {
     },
     {
       title: "Energy Consumption",
-      icon: <Lightbulb className="w-12 h-12" />,
+      description: "Assess your energy usage",
+      icon: <Zap className="w-6 h-6" />,
       content: (
         <>
           <FrequencySlider
-            label="Starship Electricity Usage"
+            label="Electricity Usage"
+            icon={<Zap className="w-4 h-4" />}
             value={formData.energy.electricity}
             onChange={(value) => updateFormData('energy', 'electricity', value)}
           />
           <FrequencySlider
-            label="Cosmic Fuel Consumption"
+            label="Natural Gas Consumption"
+            icon={<Flame className="w-4 h-4" />}
             value={formData.energy.gas}
             onChange={(value) => updateFormData('energy', 'gas', value)}
           />
-          <div className="mt-4">
-            <Label htmlFor="renewable" className="flex items-center space-x-2 cursor-pointer">
-              <input
-                type="checkbox"
-                id="renewable"
-                checked={formData.energy.renewable}
-                onChange={(e) => updateFormData('energy', 'renewable', e.target.checked)}
-                className="form-checkbox h-5 w-5 text-indigo-600"
-              />
-              <span>Do you use renewable energy sources?</span>
-            </Label>
+          <div className="flex items-center justify-between mt-6">
+            <div className="flex items-center space-x-2">
+              <Leaf className="w-4 h-4 text-green-500" />
+              <Label htmlFor="renewable" className="text-sm font-medium">
+                Do you use renewable energy sources?
+              </Label>
+            </div>
+            <Switch
+              id="renewable"
+              checked={formData.energy.renewable}
+              onCheckedChange={(checked) => updateFormData('energy', 'renewable', checked)}
+            />
           </div>
         </>
       )
     },
     {
-      title: "Space Cuisine",
-      icon: <Utensils className="w-12 h-12" />,
+      title: "Dietary Habits",
+      description: "Analyze your food choices",
+      icon: <Utensils className="w-6 h-6" />,
       content: (
         <RadioGroup 
           value={formData.food} 
           onValueChange={(value) => setFormData(prev => ({ ...prev, food: value }))}
-          className="space-y-2"
+          className="space-y-3"
         >
           <div className="flex items-center space-x-2">
             <RadioGroupItem value="vegan" id="vegan" />
-            <Label htmlFor="vegan">Vegan Astronaut</Label>
+            <Label htmlFor="vegan">Vegan</Label>
           </div>
           <div className="flex items-center space-x-2">
             <RadioGroupItem value="vegetarian" id="vegetarian" />
-            <Label htmlFor="vegetarian">Vegetarian Space Explorer</Label>
+            <Label htmlFor="vegetarian">Vegetarian</Label>
           </div>
           <div className="flex items-center space-x-2">
             <RadioGroupItem value="mixed" id="mixed" />
-            <Label htmlFor="mixed">Mixed Galactic Diet</Label>
+            <Label htmlFor="mixed">Mixed Diet</Label>
           </div>
           <div className="flex items-center space-x-2">
             <RadioGroupItem value="high-meat" id="high-meat" />
-            <Label htmlFor="high-meat">High Protein Space Warrior</Label>
+            <Label htmlFor="high-meat">High Protein Diet</Label>
           </div>
         </RadioGroup>
       )
     },
     {
-      title: "Cosmic Shopping",
-      icon: <ShoppingBag className="w-12 h-12" />,
+      title: "Consumer Behavior",
+      description: "Evaluate your shopping habits",
+      icon: <ShoppingBag className="w-6 h-6" />,
       content: (
         <FrequencySlider
-          label="Intergalactic Purchases"
+          label="New Product Purchases"
+          icon={<ShoppingBag className="w-4 h-4" />}
           value={formData.shopping}
           onChange={(value) => setFormData(prev => ({ ...prev, shopping: value }))}
         />
       )
     },
     {
-      title: "Space Recycling",
-      icon: <Recycle className="w-12 h-12" />,
+      title: "Waste Management",
+      description: "Assess your recycling habits",
+      icon: <Recycle className="w-6 h-6" />,
       content: (
         <FrequencySlider
-          label="Space Waste Recycling"
+          label="Recycling Frequency"
+          icon={<Recycle className="w-4 h-4" />}
           value={formData.recycling}
           onChange={(value) => setFormData(prev => ({ ...prev, recycling: value }))}
         />
       )
     },
     {
-      title: "Cosmic Hydration",
-      icon: <Droplet className="w-12 h-12" />,
+      title: "Water Usage",
+      description: "Evaluate your water consumption",
+      icon: <Droplet className="w-6 h-6" />,
       content: (
         <FrequencySlider
-          label="Cosmic Water Consumption"
+          label="Water Consumption"
+          icon={<Droplet className="w-4 h-4" />}
           value={formData.water}
           onChange={(value) => setFormData(prev => ({ ...prev, water: value }))}
         />
@@ -214,42 +230,40 @@ export default function CarbonFootprintCalculator() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-900 via-indigo-900 to-gray-900 text-white overflow-hidden">
-      <div className="container mx-auto px-4 py-16">
+    <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-teal-100 text-gray-800 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-3xl mx-auto">
         <motion.h1
-          className="text-5xl md:text-6xl font-extrabold mb-8 text-center text-transparent bg-clip-text bg-gradient-to-r from-teal-300 via-indigo-500 to-pink-600"
+          className="text-4xl font-bold mb-4 text-center text-emerald-800"
           initial={{ opacity: 0, y: -50 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1 }}
+          transition={{ duration: 0.5 }}
         >
-          🚀 Cosmic Carbon Calculator
+          Carbon Footprint Calculator
         </motion.h1>
 
         <motion.p
-          className="text-xl mb-12 text-center text-indigo-200"
+          className="text-lg mb-12 text-center text-emerald-700 max-w-2xl mx-auto"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.5, duration: 1 }}
+          transition={{ delay: 0.3, duration: 0.5 }}
         >
-          Embark on an intergalactic journey to discover your impact on our planet and learn how to reduce your cosmic carbon footprint!
+          Discover your environmental impact and learn how to reduce your carbon footprint with our interactive calculator.
         </motion.p>
 
         {!results ? (
-          <Card className="bg-gray-800 bg-opacity-50 border-indigo-500 max-w-2xl mx-auto">
+          <Card className="bg-white shadow-xl rounded-2xl overflow-hidden">
+            <CardHeader className="bg-emerald-700 text-white p-6">
+              <CardTitle className="text-2xl font-semibold flex items-center space-x-2">
+                {steps[currentStep].icon}
+                <span>{steps[currentStep].title}</span>
+              </CardTitle>
+              <CardDescription className="text-emerald-100">
+                {steps[currentStep].description}
+              </CardDescription>
+            </CardHeader>
             <CardContent className="p-6">
               <div className="mb-6">
-                <h2 className="text-3xl font-bold text-indigo-300 mb-2">{steps[currentStep].title}</h2>
-                <Progress value={(currentStep + 1) / steps.length * 100} className="h-2 bg-indigo-900" />
-              </div>
-              <div className="flex items-center justify-center mb-8">
-                <motion.div
-                  className="text-teal-400"
-                  initial={{ scale: 0, rotate: -180 }}
-                  animate={{ scale: 1, rotate: 0 }}
-                  transition={{ duration: 0.5 }}
-                >
-                  {steps[currentStep].icon}
-                </motion.div>
+                <Progress value={(currentStep + 1) / steps.length * 100} className="h-2 bg-emerald-100" />
               </div>
               <AnimatePresence mode="wait">
                 <motion.div
@@ -266,53 +280,55 @@ export default function CarbonFootprintCalculator() {
                 <Button
                   onClick={prevStep}
                   disabled={currentStep === 0}
-                  className="bg-indigo-500 hover:bg-indigo-600"
+                  className="bg-emerald-600 hover:bg-emerald-700 text-white"
                 >
-                  <ChevronLeft className="mr-2 h-4 w-4" /> Previous
+                  Previous
                 </Button>
                 <Button
                   onClick={nextStep}
-                  className="bg-teal-500 hover:bg-teal-600"
+                  className="bg-emerald-600 hover:bg-emerald-700 text-white"
                 >
-                  {currentStep === steps.length - 1 ? "Calculate" : "Next"} <ChevronRight className="ml-2 h-4 w-4" />
+                  {currentStep === steps.length - 1 ? "Calculate" : "Next"}
                 </Button>
               </div>
             </CardContent>
           </Card>
         ) : (
           <motion.div
-            className="bg-gray-800 bg-opacity-50 p-8 rounded-3xl text-center max-w-4xl mx-auto"
+            className="bg-white p-8 rounded-2xl shadow-xl"
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5 }}
           >
-            <h2 className="text-3xl font-bold mb-4 text-teal-300">Your Cosmic Carbon Footprint</h2>
-            <p className="text-5xl font-bold text-indigo-300 mb-8">{results.total} tons CO2e/year</p>
+            <h2 className="text-3xl font-bold mb-4 text-emerald-800 text-center">Your Carbon Footprint</h2>
+            <p className="text-5xl font-bold text-emerald-600 mb-8 text-center">{results.total} tons CO2e/year</p>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-6 mb-8">
               {Object.entries(results).map(([key, value]) => (
                 key !== 'total' && (
-                  <div key={key} className="bg-gray-700 p-4 rounded-lg">
-                    <h3 className="text-lg font-semibold text-pink-300 capitalize mb-2">{key}</h3>
-                    <p className="text-2xl font-bold text-teal-300">{value}</p>
-                  </div>
+                  <Card key={key} className="bg-emerald-50">
+                    <CardContent className="p-4">
+                      <h3 className="text-sm font-semibold text-emerald-700 capitalize mb-2">{key}</h3>
+                      <p className="text-2xl font-bold text-emerald-600">{value}</p>
+                    </CardContent>
+                  </Card>
                 )
               ))}
             </div>
-            <p className="text-lg text-indigo-200 mb-8">
+            <p className="text-lg text-emerald-700 mb-8 text-center">
               Your carbon footprint is equivalent to planting {Math.round(parseFloat(results.total) * 16.5)} trees each year to offset your emissions.
             </p>
-            <div className="space-x-4">
+            <div className="flex justify-center space-x-4">
               <Button
                 onClick={() => setResults(null)}
-                className="bg-indigo-500 hover:bg-indigo-600"
+                className="bg-emerald-600 hover:bg-emerald-700 text-white"
               >
                 Recalculate
               </Button>
               <Link href="/eco-tips">
                 <Button
-                  className="bg-teal-500 hover:bg-teal-600"
+                  className="bg-teal-600 hover:bg-teal-700 text-white"
                 >
-                  Discover Eco-Friendly Space Tips
+                  Discover Eco-Friendly Tips
                 </Button>
               </Link>
             </div>
@@ -323,9 +339,12 @@ export default function CarbonFootprintCalculator() {
   )
 }
 
-const FrequencySlider = ({ label, value, onChange }) => (
+const FrequencySlider = ({ label, icon, value, onChange }) => (
   <div className="space-y-4 mb-6">
-    <Label htmlFor={label} className="text-lg font-semibold text-indigo-300">{label}</Label>
+    <div className="flex items-center space-x-2">
+      {icon}
+      <Label htmlFor={label} className="text-sm font-medium text-gray-700">{label}</Label>
+    </div>
     <Slider
       id={label}
       min={0}
@@ -335,9 +354,9 @@ const FrequencySlider = ({ label, value, onChange }) => (
       onValueChange={(newValue) => onChange(newValue[0])}
       className="py-4"
     />
-    <div className="flex justify-between text-xs text-indigo-400">
+    <div className="flex justify-between text-xs text-gray-500">
       {frequencyOptions.map((option, index) => (
-        <span key={option} className={index === value ? 'text-teal-300 font-bold' : ''}>
+        <span key={option} className={index === value ? 'text-emerald-600 font-semibold' : ''}>
           {option}
         </span>
       ))}
