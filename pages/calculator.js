@@ -4,13 +4,6 @@ import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Car, Train, Plane, Zap, Flame, Leaf, Utensils, ShoppingBag, Recycle, Droplet } from 'lucide-react'
 import Link from 'next/link'
-import { Slider } from "@/components/ui/slider"
-import { Label } from "@/components/ui/label"
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import { Button } from "@/components/ui/button"
-import { Progress } from "@/components/ui/progress"
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
-import { Switch } from "@/components/ui/switch"
 
 const frequencyOptions = ['Never', 'Rarely', 'Sometimes', 'Often', 'Very Often']
 
@@ -132,14 +125,16 @@ export default function CarbonFootprintCalculator() {
           <div className="flex items-center justify-between mt-6">
             <div className="flex items-center space-x-2">
               <Leaf className="w-4 h-4 text-green-500" />
-              <Label htmlFor="renewable" className="text-sm font-medium">
+              <label htmlFor="renewable" className="text-sm font-medium">
                 Do you use renewable energy sources?
-              </Label>
+              </label>
             </div>
-            <Switch
+            <input
+              type="checkbox"
               id="renewable"
               checked={formData.energy.renewable}
-              onCheckedChange={(checked) => updateFormData('energy', 'renewable', checked)}
+              onChange={(e) => updateFormData('energy', 'renewable', e.target.checked)}
+              className="w-4 h-4 text-emerald-600 border-gray-300 rounded focus:ring-emerald-500"
             />
           </div>
         </>
@@ -150,28 +145,22 @@ export default function CarbonFootprintCalculator() {
       description: "Analyze your food choices",
       icon: <Utensils className="w-6 h-6" />,
       content: (
-        <RadioGroup 
-          value={formData.food} 
-          onValueChange={(value) => setFormData(prev => ({ ...prev, food: value }))}
-          className="space-y-3"
-        >
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value="vegan" id="vegan" />
-            <Label htmlFor="vegan">Vegan</Label>
-          </div>
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value="vegetarian" id="vegetarian" />
-            <Label htmlFor="vegetarian">Vegetarian</Label>
-          </div>
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value="mixed" id="mixed" />
-            <Label htmlFor="mixed">Mixed Diet</Label>
-          </div>
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value="high-meat" id="high-meat" />
-            <Label htmlFor="high-meat">High Protein Diet</Label>
-          </div>
-        </RadioGroup>
+        <div className="space-y-3">
+          {['vegan', 'vegetarian', 'mixed', 'high-meat'].map((diet) => (
+            <div key={diet} className="flex items-center space-x-2">
+              <input
+                type="radio"
+                id={diet}
+                name="diet"
+                value={diet}
+                checked={formData.food === diet}
+                onChange={(e) => setFormData(prev => ({ ...prev, food: e.target.value }))}
+                className="w-4 h-4 text-emerald-600 border-gray-300 focus:ring-emerald-500"
+              />
+              <label htmlFor={diet} className="text-sm font-medium capitalize">{diet.replace('-', ' ')}</label>
+            </div>
+          ))}
+        </div>
       )
     },
     {
@@ -251,19 +240,22 @@ export default function CarbonFootprintCalculator() {
         </motion.p>
 
         {!results ? (
-          <Card className="bg-white shadow-xl rounded-2xl overflow-hidden">
-            <CardHeader className="bg-emerald-700 text-white p-6">
-              <CardTitle className="text-2xl font-semibold flex items-center space-x-2">
+          <div className="bg-white shadow-xl rounded-2xl overflow-hidden">
+            <div className="bg-emerald-700 text-white p-6">
+              <h2 className="text-2xl font-semibold flex items-center space-x-2">
                 {steps[currentStep].icon}
                 <span>{steps[currentStep].title}</span>
-              </CardTitle>
-              <CardDescription className="text-emerald-100">
+              </h2>
+              <p className="text-emerald-100">
                 {steps[currentStep].description}
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="p-6">
-              <div className="mb-6">
-                <Progress value={(currentStep + 1) / steps.length * 100} className="h-2 bg-emerald-100" />
+              </p>
+            </div>
+            <div className="p-6">
+              <div className="mb-6 bg-emerald-200 rounded-full h-2.5">
+                <div 
+                  className="bg-emerald-600 h-2.5 rounded-full" 
+                  style={{ width: `${((currentStep + 1) / steps.length) * 100}%` }}
+                ></div>
               </div>
               <AnimatePresence mode="wait">
                 <motion.div
@@ -277,22 +269,22 @@ export default function CarbonFootprintCalculator() {
                 </motion.div>
               </AnimatePresence>
               <div className="flex justify-between mt-8">
-                <Button
+                <button
                   onClick={prevStep}
                   disabled={currentStep === 0}
-                  className="bg-emerald-600 hover:bg-emerald-700 text-white"
+                  className="px-4 py-2 bg-emerald-600 text-white rounded-md hover:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   Previous
-                </Button>
-                <Button
+                </button>
+                <button
                   onClick={nextStep}
-                  className="bg-emerald-600 hover:bg-emerald-700 text-white"
+                  className="px-4 py-2 bg-emerald-600 text-white rounded-md hover:bg-emerald-700"
                 >
                   {currentStep === steps.length - 1 ? "Calculate" : "Next"}
-                </Button>
+                </button>
               </div>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         ) : (
           <motion.div
             className="bg-white p-8 rounded-2xl shadow-xl"
@@ -305,12 +297,10 @@ export default function CarbonFootprintCalculator() {
             <div className="grid grid-cols-2 md:grid-cols-3 gap-6 mb-8">
               {Object.entries(results).map(([key, value]) => (
                 key !== 'total' && (
-                  <Card key={key} className="bg-emerald-50">
-                    <CardContent className="p-4">
-                      <h3 className="text-sm font-semibold text-emerald-700 capitalize mb-2">{key}</h3>
-                      <p className="text-2xl font-bold text-emerald-600">{value}</p>
-                    </CardContent>
-                  </Card>
+                  <div key={key} className="bg-emerald-50 p-4 rounded-lg">
+                    <h3 className="text-sm font-semibold text-emerald-700 capitalize mb-2">{key}</h3>
+                    <p className="text-2xl font-bold text-emerald-600">{value}</p>
+                  </div>
                 )
               ))}
             </div>
@@ -318,18 +308,18 @@ export default function CarbonFootprintCalculator() {
               Your carbon footprint is equivalent to planting {Math.round(parseFloat(results.total) * 16.5)} trees each year to offset your emissions.
             </p>
             <div className="flex justify-center space-x-4">
-              <Button
+              <button
                 onClick={() => setResults(null)}
-                className="bg-emerald-600 hover:bg-emerald-700 text-white"
+                className="px-4 py-2 bg-emerald-600 text-white rounded-md hover:bg-emerald-700"
               >
                 Recalculate
-              </Button>
+              </button>
               <Link href="/eco-tips">
-                <Button
-                  className="bg-teal-600 hover:bg-teal-700 text-white"
+                <button
+                  className="px-4 py-2 bg-teal-600 text-white rounded-md hover:bg-teal-700"
                 >
                   Discover Eco-Friendly Tips
-                </Button>
+                </button>
               </Link>
             </div>
           </motion.div>
@@ -343,16 +333,17 @@ const FrequencySlider = ({ label, icon, value, onChange }) => (
   <div className="space-y-4 mb-6">
     <div className="flex items-center space-x-2">
       {icon}
-      <Label htmlFor={label} className="text-sm font-medium text-gray-700">{label}</Label>
+      <label htmlFor={label} className="text-sm font-medium text-gray-700">{label}</label>
     </div>
-    <Slider
+    <input
+      type="range"
       id={label}
       min={0}
       max={4}
       step={1}
-      value={[value]}
-      onValueChange={(newValue) => onChange(newValue[0])}
-      className="py-4"
+      value={value}
+      onChange={(e) => onChange(parseInt(e.target.value))}
+      className="w-full h-2 bg-emerald-200 rounded-lg appearance-none cursor-pointer"
     />
     <div className="flex justify-between text-xs text-gray-500">
       {frequencyOptions.map((option, index) => (
